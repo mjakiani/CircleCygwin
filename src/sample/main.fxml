@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <content>
+      <VBox>
+          <padding><Insets bottom="10" left="10" right="10" top="10" /></padding>
+         <children>
+            <GridPane alignment="center" hgap="10" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                  <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                </rowConstraints>
+                <children>
+                    <TextField fx:id="Nxp" GridPane.columnIndex="1" />
+                    <Label text="Nxp" />
+                    <Label text="Nyp" GridPane.columnIndex="2" />
+                    <TextField fx:id="Nyp" GridPane.columnIndex="3" />
+                    <Label text="Nzp (r theta z)" GridPane.columnIndex="4" />
+                    <TextField fx:id="Nzp" GridPane.columnIndex="5" />
+            
+                    <Label text="Start Option" GridPane.rowIndex="2" />
+                    <Label text="Radius Length D" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                    <TextField fx:id="recordFile" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                    <TextField fx:id="Py" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <TextField fx:id="Pz" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                    <TextField fx:id="writeRestartFile" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                    <Label text="Write Restart File" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                    <Label text="Record File" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                    <Label text="Domain Size" GridPane.rowIndex="3" />
+                    <Label text="Py" GridPane.rowIndex="4" />
+                    <Label text="Pz" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                    <Label text="Domain Decomposition" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                    <TextField fx:id="radiusLengthD" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                    <TextField fx:id="domainSize" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <TextField fx:id="totalTimeSteps" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                    <Label text="Total Time Steps" GridPane.rowIndex="5" />
+                    <Label text="Re" GridPane.rowIndex="6" />
+                    <Label text="dt" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                    <Label text="Velocity" GridPane.rowIndex="7" />
+                    <Label text="Pressure" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                    <Label text="Max Iteration" GridPane.columnIndex="4" GridPane.rowIndex="7" />
+                    <Label text="Max Residual" GridPane.columnIndex="4" GridPane.rowIndex="8" />
+                    <Label text="Relaxation Factor" GridPane.columnIndex="4" GridPane.rowIndex="9" />
+                    <Label text="Velocity" GridPane.rowIndex="8" />
+                    <Label text="Pressure" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                    <Label text="Velocity" GridPane.rowIndex="9" />
+                    <Label text="Pressure" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+                    <Button id="run" mnemonicParsing="false" onAction="#runAll" text="Run" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                  <TextField fx:id="re" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                  <TextField fx:id="dt" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                  <TextField fx:id="maxIterationVelocity" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                  <TextField fx:id="maxResidualVelocity" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                  <TextField fx:id="relaxationFactorVelocity" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                  <TextField fx:id="relaxationFactorPressure" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+                  <TextField fx:id="maxResidualPressure" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+                  <TextField fx:id="maxIterationPressure" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                  <Label text="Inlet Velocity" GridPane.rowIndex="10" />
+                  <Label text="u" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+                  <Label text="v" GridPane.columnIndex="4" GridPane.rowIndex="10" />
+                  <Label text="Inlet Velocity" GridPane.rowIndex="11" />
+                  <Label text="u" GridPane.columnIndex="2" GridPane.rowIndex="11" />
+                  <Label text="v" GridPane.columnIndex="4" GridPane.rowIndex="11" />
+                  <Label text="Inlet Velocity" GridPane.rowIndex="12" />
+                  <Label text="u" GridPane.columnIndex="2" GridPane.rowIndex="12" />
+                  <Label text="v" GridPane.columnIndex="4" GridPane.rowIndex="12" />
+                  <Label text="w" GridPane.columnIndex="6" GridPane.rowIndex="10" />
+                  <Label text="w" GridPane.columnIndex="6" GridPane.rowIndex="11" />
+                  <Label text="w" GridPane.columnIndex="6" GridPane.rowIndex="12" />
+                  <TextField fx:id="inlet1" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                  <TextField fx:id="inlet1u" GridPane.columnIndex="3" GridPane.rowIndex="10" />
+                  <TextField fx:id="inlet1v" GridPane.columnIndex="5" GridPane.rowIndex="10" />
+                  <TextField fx:id="inlet2" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                  <TextField fx:id="inlet2u" GridPane.columnIndex="3" GridPane.rowIndex="11" />
+                  <TextField fx:id="inlet2v" GridPane.columnIndex="5" GridPane.rowIndex="11" />
+                  <TextField fx:id="inlet3" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                  <TextField fx:id="inlet3u" GridPane.columnIndex="3" GridPane.rowIndex="12" />
+                  <TextField fx:id="inlet3v" GridPane.columnIndex="5" GridPane.rowIndex="12" />
+                  <TextField fx:id="inlet1w" GridPane.columnIndex="7" GridPane.rowIndex="10" />
+                  <TextField fx:id="inlet2w" GridPane.columnIndex="7" GridPane.rowIndex="11" />
+                  <TextField fx:id="inlet3w" GridPane.columnIndex="7" GridPane.rowIndex="12" />
+                  <Label text="Turbulence Model" GridPane.rowIndex="13" />
+                  <Label text="Cs" GridPane.rowIndex="14" />
+                  <Label text="Alpha" GridPane.columnIndex="2" GridPane.rowIndex="14" />
+                  <TextField fx:id="cs" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+                  <TextField fx:id="alpha" GridPane.columnIndex="3" GridPane.rowIndex="14" />
+                  <ChoiceBox fx:id="startOption" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <ChoiceBox fx:id="turbulenceModel" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                  <Label text="Write Output Files" GridPane.rowIndex="15" />
+                  <Label text="Location of Probes" GridPane.rowIndex="16" />
+                  <TextField fx:id="lp11" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+                  <TextField fx:id="lp12" GridPane.columnIndex="2" GridPane.rowIndex="16" />
+                  <TextField fx:id="lp13" GridPane.columnIndex="3" GridPane.rowIndex="16" />
+                  <TextField fx:id="lp14" GridPane.columnIndex="4" GridPane.rowIndex="16" />
+                  <TextField fx:id="lp21" GridPane.columnIndex="1" GridPane.rowIndex="17" />
+                  <TextField fx:id="lp22" GridPane.columnIndex="2" GridPane.rowIndex="17" />
+                  <TextField fx:id="lp23" GridPane.columnIndex="3" GridPane.rowIndex="17" />
+                  <TextField fx:id="lp24" GridPane.columnIndex="4" GridPane.rowIndex="17" />
+                  <TextField fx:id="lp31" GridPane.columnIndex="1" GridPane.rowIndex="18" />
+                  <TextField fx:id="lp32" GridPane.columnIndex="2" GridPane.rowIndex="18" />
+                  <TextField fx:id="lp33" GridPane.columnIndex="3" GridPane.rowIndex="18" />
+                  <TextField fx:id="lp34" GridPane.columnIndex="4" GridPane.rowIndex="18" />
+                  <Label text="Motion Choice" GridPane.rowIndex="19" />
+                  <Label text="Start Motion" GridPane.columnIndex="2" GridPane.rowIndex="19" />
+                  <Label text="X" GridPane.rowIndex="20" />
+                  <Label text="Y" GridPane.columnIndex="2" GridPane.rowIndex="20" />
+                  <Label text="Z" GridPane.columnIndex="4" GridPane.rowIndex="20" />
+                  <Label text="X" GridPane.rowIndex="21" />
+                  <Label text="Y" GridPane.columnIndex="2" GridPane.rowIndex="21" />
+                  <Label text="Z" GridPane.columnIndex="4" GridPane.rowIndex="21" />
+                  <Label text="Amplitude" GridPane.columnIndex="6" GridPane.rowIndex="20" />
+                  <Label text="Frequency" GridPane.columnIndex="6" GridPane.rowIndex="21" />
+                  <Label text="cKy" GridPane.rowIndex="22" />
+                  <Label text="cDy" GridPane.columnIndex="2" GridPane.rowIndex="22" />
+                  <Label text="cFy" GridPane.columnIndex="4" GridPane.rowIndex="22" />
+                  <Label text="DYN EQN Coeff" GridPane.columnIndex="6" GridPane.rowIndex="22" />
+                  <Label text="Snapshot Choice" GridPane.rowIndex="23" />
+                  <Label text="Total Snapshots" GridPane.columnIndex="2" GridPane.rowIndex="23" />
+                  <Label text="Start Snapshots" GridPane.columnIndex="4" GridPane.rowIndex="23" />
+                  <Label text="Dump Snapshot Interval" GridPane.columnIndex="6" GridPane.rowIndex="23" />
+                  <Label text="Suction Choice" GridPane.rowIndex="24" />
+                  <Label text="Suction/Blowing Velocity" GridPane.rowIndex="25" />
+                  <Label text="Frequency" GridPane.columnIndex="2" GridPane.rowIndex="25" />
+                  <Label text="Phase" GridPane.columnIndex="4" GridPane.rowIndex="25" />
+                  <Label text="eJ1" GridPane.rowIndex="27" />
+                  <Label text="eJ2" GridPane.columnIndex="2" GridPane.rowIndex="27" />
+                  <Label text="eJ3" GridPane.columnIndex="4" GridPane.rowIndex="27" />
+                  <Label text="eJ4" GridPane.columnIndex="6" GridPane.rowIndex="27" />
+                  <Label text="Synthetic Jet Index" GridPane.rowIndex="26" />
+                  <ChoiceBox fx:id="motionChoice" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="19" />
+                  <TextField fx:id="startMotion" GridPane.columnIndex="3" GridPane.rowIndex="19" />
+                  <TextField fx:id="ampX" GridPane.columnIndex="1" GridPane.rowIndex="20" />
+                  <TextField fx:id="ampY" GridPane.columnIndex="3" GridPane.rowIndex="20" />
+                  <TextField fx:id="ampZ" GridPane.columnIndex="5" GridPane.rowIndex="20" />
+                  <TextField fx:id="freqX" GridPane.columnIndex="1" GridPane.rowIndex="21" />
+                  <TextField fx:id="freqY" GridPane.columnIndex="3" GridPane.rowIndex="21" />
+                  <TextField fx:id="freqZ" GridPane.columnIndex="5" GridPane.rowIndex="21" />
+                  <TextField fx:id="cKy" GridPane.columnIndex="1" GridPane.rowIndex="22" />
+                  <TextField fx:id="cDy" GridPane.columnIndex="3" GridPane.rowIndex="22" />
+                  <TextField fx:id="cFy" GridPane.columnIndex="5" GridPane.rowIndex="22" />
+                  <ChoiceBox fx:id="snapshotChoice" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="23" />
+                  <TextField fx:id="totalSnapshots" GridPane.columnIndex="3" GridPane.rowIndex="23" />
+                  <TextField fx:id="startSnapshots" GridPane.columnIndex="5" GridPane.rowIndex="23" />
+                  <TextField fx:id="dumpSnapshotInterval" GridPane.columnIndex="7" GridPane.rowIndex="23" />
+                  <TextField fx:id="suctionChoice1" GridPane.columnIndex="1" GridPane.rowIndex="24" />
+                  <TextField fx:id="suctionChoice2" GridPane.columnIndex="3" GridPane.rowIndex="24" />
+                  <TextField fx:id="suctionChoice3" GridPane.columnIndex="5" GridPane.rowIndex="24" />
+                  <TextField fx:id="suctionVelocity" GridPane.columnIndex="1" GridPane.rowIndex="25" />
+                  <TextField fx:id="suctionFreq" GridPane.columnIndex="3" GridPane.rowIndex="25" />
+                  <TextField fx:id="suctionPhase" GridPane.columnIndex="5" GridPane.rowIndex="25" />
+                  <TextField fx:id="eJ1" GridPane.columnIndex="1" GridPane.rowIndex="27" />
+                  <TextField fx:id="eJ2" GridPane.columnIndex="3" GridPane.rowIndex="27" />
+                  <TextField fx:id="eJ3" GridPane.columnIndex="5" GridPane.rowIndex="27" />
+                  <TextField fx:id="eJ4" GridPane.columnIndex="7" GridPane.rowIndex="27" />
+                </children>
+            </GridPane>
+            <TextArea fx:id="outputTA" prefHeight="200.0" prefWidth="200.0">
+               <font>
+                  <Font name="Lucida Console" size="12.0" />
+               </font></TextArea>
+            <ProgressBar fx:id="progress" prefWidth="1000.0" progress="0.52" />
+         </children>
+      </VBox>
+   </content>
+</ScrollPane>
