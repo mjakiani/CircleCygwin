@@ -1,46 +1,46 @@
 Nxp Nyp Nzp (r theta z)
-,,
+193,257,2
 Start Option (0:New Case,1:Restart), Write Restart file, Record file
-0
+0,100,990000
 Domain size (Radius Length)D
-
+25.0,1.0
 Domain Decomposition (Py Pz)
-
+4,1
 Total Time Steps
-
+100000
 Re dt
-
+100.0,0.001
 Max Iteration (vel pressure)
-
+30,800
 Max Residual (vel pressure)
-
+0.00001,0.00001
 Relaxation factor (vel pressure)
-
+1.5,1.1
 Inlet Vel with AOA and Gust (u v w)
-
-
-
+1.0,0.0,0.0,0.0
+0.0,0.0,0.0,0.0
+0.0,0.0,0.0,0.0
 Turbulence Model(0=No model, 1=Spalart Almaras)
-
+0
 Cs, alpha
-
+0.0,0.0
 Write Output files(TECPLOT LiftDrag LiftDragSection)
 
 Location of Probes-Should be in Domain of processor specified
-
-
-
+0,25,20,1
+0,40,20,1
+0,60,20,1
 MOTION Choice(NO=0 YES=1), Start Motion 
-
+0,1000
 Amplitude(X,Y,Z)&Freq(X,Y,Z)
-
+0.0,0.0,0.0,0.0,0.0,0.0
 DYN EQN Coeff (cKy,cDy,cFy)
-
+1.134,0.00256,0.00427
 SnapshotChoice(N0=0 YES=1),TotalSnapshots,StartSnapshots,DumpSnapshot Interval
-
+0,40,28500,160
 SUCTION Choice
-
+0,20000,2
 Suction/Blowing velocity (-ve for suction and +ve for blowing)Vel,Freq,Phase
-
+-2.0,0.0,90.0
 Synthetic Jet Index (sJ1 eJ1 sJ2 eJ2)
-
+0,15,242,257

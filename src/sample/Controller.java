@@ -16,13 +16,13 @@ public class Controller {
     @FXML
     TextField Nxp, Nyp, Nzp, writeRestartFile, recordFile, domainSize, radiusLengthD, Py, Pz, totalTimeSteps, re, dt, maxIterationVelocity, maxIterationPressure, maxResidualVelocity, maxResidualPressure;
     @FXML
-    TextField relaxationFactorVelocity, relaxationFactorPressure, inlet1, inlet1u, inlet1v, inlet1w, inlet21, inlet2u, inlet2v, inlet2w, inlet3, inlet3u, inlet3v, inlet3w, cs, alpha;
+    TextField relaxationFactorVelocity, relaxationFactorPressure, inlet1, inlet1u, inlet1v, inlet1w, inlet2, inlet2u, inlet2v, inlet2w, inlet3, inlet3u, inlet3v, inlet3w, cs, alpha;
     @FXML
     TextField lp11, lp12, lp13, lp14, lp21, lp22, lp23, lp24, lp31, lp32, lp33, lp34, startMotion, ampX, ampY, ampZ, freqX, freqY, freqZ;
     @FXML
     TextField cKy, cDy, cFy, totalSnapshots, startSnapshots, dumpSnapshotInterval, suctionChoice1, suctionChoice2, suctionChoice3;
     @FXML
-    TextField suctionVelocity, suctionFreq, suctionPhase, eJ1, eJ2, eJ3, eJ4;
+    TextField suctionVelocity, suctionFreq, suctionPhase, sJ1, eJ1, sJ2, eJ2;
     @FXML
     TextArea outputTA;
     @FXML
@@ -32,17 +32,17 @@ public class Controller {
 
 
     @FXML
-    public  void initialize() {
-        startOption.setItems(FXCollections.observableArrayList("New Case","Restart"));
+    public void initialize() {
+        startOption.setItems(FXCollections.observableArrayList("New Case", "Restart"));
         startOption.getSelectionModel().selectFirst();
 
-        turbulenceModel.setItems(FXCollections.observableArrayList("No Model","Spalart Almaras"));
+        turbulenceModel.setItems(FXCollections.observableArrayList("No Model", "Spalart Almaras"));
         turbulenceModel.getSelectionModel().selectFirst();
 
-        motionChoice.setItems(FXCollections.observableArrayList("No","Yes"));
+        motionChoice.setItems(FXCollections.observableArrayList("No", "Yes"));
         motionChoice.getSelectionModel().selectFirst();
 
-        snapshotChoice.setItems(FXCollections.observableArrayList("No","Yes"));
+        snapshotChoice.setItems(FXCollections.observableArrayList("No", "Yes"));
         snapshotChoice.getSelectionModel().selectFirst();
     }
 
@@ -229,49 +229,49 @@ public class Controller {
             io.write("Nxp Nyp Nzp (r theta z)\n");
             io.write(Nxp.getText() + "," + Nyp.getText() + "," + Nzp.getText() + "\n");
             io.write("Start Option (0:New Case,1:Restart), Write Restart file, Record file\n");
-            io.write(startOption.getSelectionModel().getSelectedIndex()+"\n");
+            io.write(startOption.getSelectionModel().getSelectedIndex() + "," + writeRestartFile.getText() + "," + recordFile.getText() + "\n");
             io.write("Domain size (Radius Length)D\n");
-            io.write("\n");
+            io.write(domainSize.getText() + "," + radiusLengthD.getText() + "\n");
             io.write("Domain Decomposition (Py Pz)\n");
-            io.write("\n");
+            io.write(Py.getText() + "," + Pz.getText() + "\n");
             io.write("Total Time Steps\n");
-            io.write("\n");
+            io.write(totalTimeSteps.getText() + "\n");
             io.write("Re dt\n");
-            io.write("\n");
+            io.write(re.getText() + "," + dt.getText() + "\n");
             io.write("Max Iteration (vel pressure)\n");
-            io.write("\n");
+            io.write(maxIterationVelocity.getText() + "," + maxIterationPressure.getText() + "\n");
             io.write("Max Residual (vel pressure)\n");
-            io.write("\n");
+            io.write(maxResidualVelocity.getText() + "," + maxResidualPressure.getText() + "\n");
             io.write("Relaxation factor (vel pressure)\n");
-            io.write("\n");
+            io.write(relaxationFactorVelocity.getText() + "," + relaxationFactorPressure.getText() + "\n");
             io.write("Inlet Vel with AOA and Gust (u v w)\n");
-            io.write("\n");
-            io.write("\n");
-            io.write("\n");
+            io.write(inlet1.getText() + "," + inlet1u.getText() + "," + inlet1v.getText() + "," + inlet1w.getText() + "\n");
+            io.write(inlet2.getText() + "," + inlet2u.getText() + "," + inlet2v.getText() + "," + inlet2w.getText() + "\n");
+            io.write(inlet3.getText() + "," + inlet3u.getText() + "," + inlet3v.getText() + "," + inlet3u.getText() + "\n");
             io.write("Turbulence Model(0=No model, 1=Spalart Almaras)\n");
-            io.write("\n");
+            io.write(turbulenceModel.getSelectionModel().getSelectedIndex() + "\n");
             io.write("Cs, alpha\n");
-            io.write("\n");
+            io.write(cs.getText() + "," + alpha.getText() + "\n");
             io.write("Write Output files(TECPLOT LiftDrag LiftDragSection)\n");
             io.write("\n");
             io.write("Location of Probes-Should be in Domain of processor specified\n");
-            io.write("\n");
-            io.write("\n");
-            io.write("\n");
+            io.write(lp11.getText() + "," + lp12.getText() + "," + lp13.getText() + "," + lp14.getText() + "\n");
+            io.write(lp21.getText() + "," + lp22.getText() + "," + lp23.getText() + "," + lp24.getText() + "\n");
+            io.write(lp31.getText() + "," + lp32.getText() + "," + lp33.getText() + "," + lp34.getText() + "\n");
             io.write("MOTION Choice(NO=0 YES=1), Start Motion \n");
-            io.write("\n");
+            io.write(motionChoice.getSelectionModel().getSelectedIndex() + "," + startMotion.getText() + "\n");
             io.write("Amplitude(X,Y,Z)&Freq(X,Y,Z)\n");
-            io.write("\n");
+            io.write(ampX.getText() + "," + ampY.getText() + "," + ampZ.getText() + "," + freqX.getText() + "," + freqY.getText() + "," + freqZ.getText() + "\n");
             io.write("DYN EQN Coeff (cKy,cDy,cFy)\n");
-            io.write("\n");
+            io.write(cKy.getText()+ "," + cDy.getText()+ "," + cFy.getText()+"\n");
             io.write("SnapshotChoice(N0=0 YES=1),TotalSnapshots,StartSnapshots,DumpSnapshot Interval\n");
-            io.write("\n");
+            io.write(snapshotChoice.getSelectionModel().getSelectedIndex()+ "," + totalSnapshots.getText()+ "," + startSnapshots.getText()+ "," + dumpSnapshotInterval.getText()+"\n");
             io.write("SUCTION Choice\n");
-            io.write("\n");
+            io.write(suctionChoice1.getText()+ "," + suctionChoice2.getText()+ "," + suctionChoice3.getText()+"\n");
             io.write("Suction/Blowing velocity (-ve for suction and +ve for blowing)Vel,Freq,Phase\n");
-            io.write("\n");
+            io.write(suctionVelocity.getText()+ "," + suctionFreq.getText()+ "," + suctionPhase.getText()+"\n");
             io.write("Synthetic Jet Index (sJ1 eJ1 sJ2 eJ2)\n");
-            io.write("\n");
+            io.write(sJ1.getText()+ "," + eJ1.getText()+ "," + sJ2.getText()+ "," + eJ2.getText()+"\n");
 
             io.close();
         } catch (Exception e) {
