@@ -67,6 +67,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("Circle 2D CFD");
         primaryStage.setScene(new Scene(root, 1024, 768));
+        primaryStage.setMaximized(true);
         primaryStage.show();
     }
 

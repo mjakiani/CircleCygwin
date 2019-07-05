@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Circle:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Circle_jar</output-path>
+    <root id="archive" name="Circle.jar">
+      <element id="module-output" name="Circle" />
+      <element id="extracted-dir" path="$APPLICATION_HOME_DIR$/lib/jsch-0.1.55.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

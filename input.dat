@@ -7,7 +7,7 @@ Domain size (Radius Length)D
 Domain Decomposition (Py Pz)
 4,1
 Total Time Steps
-100000
+1000
 Re dt
 100.0,0.001
 Max Iteration (vel pressure)
@@ -25,7 +25,7 @@ Turbulence Model(0=No model, 1=Spalart Almaras)
 Cs, alpha
 0.0,0.0
 Write Output files(TECPLOT LiftDrag LiftDragSection)
-
+1000,1000,100000,5,5
 Location of Probes-Should be in Domain of processor specified
 0,25,20,1
 0,40,20,1
@@ -41,6 +41,6 @@ SnapshotChoice(N0=0 YES=1),TotalSnapshots,StartSnapshots,DumpSnapshot Interval
 SUCTION Choice
 0,20000,2
 Suction/Blowing velocity (-ve for suction and +ve for blowing)Vel,Freq,Phase
--2.0,0.0,90.0
+-0.2,0.0,90.0
 Synthetic Jet Index (sJ1 eJ1 sJ2 eJ2)
 0,15,242,257

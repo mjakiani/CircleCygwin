@@ -1,13 +1,18 @@
 package sample;
 
+import com.intellij.diagnostic.hprof.action.SystemTempFilenameSupplier;
 import com.jcraft.jsch.*;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Window;
+import org.apache.http.io.SessionInputBuffer;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+
+//import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class Controller {
 //    @FXML
@@ -20,15 +25,17 @@ public class Controller {
     @FXML
     TextField lp11, lp12, lp13, lp14, lp21, lp22, lp23, lp24, lp31, lp32, lp33, lp34, startMotion, ampX, ampY, ampZ, freqX, freqY, freqZ;
     @FXML
-    TextField cKy, cDy, cFy, totalSnapshots, startSnapshots, dumpSnapshotInterval, suctionChoice1, suctionChoice2, suctionChoice3;
+    TextField cKy, cDy, cFy, totalSnapshots, startSnapshots, dumpSnapshotInterval, suctionChoice2, suctionChoice3;
     @FXML
-    TextField suctionVelocity, suctionFreq, suctionPhase, sJ1, eJ1, sJ2, eJ2;
+    TextField suctionVelocity, suctionFreq, suctionPhase, sJ1, eJ1, sJ2, eJ2, tecplotstart, tecplotinterval, tecplotstop, tecplotliftdrag, tecplotliftdragsection;
     @FXML
     TextArea outputTA;
     @FXML
     ProgressBar progress;
     @FXML
-    ChoiceBox startOption, turbulenceModel, motionChoice, snapshotChoice;
+    ChoiceBox startOption, turbulenceModel, motionChoice, snapshotChoice, suctionChoice;
+    @FXML
+    ScrollPane mainScrollPane;
 
 
     @FXML
@@ -44,21 +51,161 @@ public class Controller {
 
         snapshotChoice.setItems(FXCollections.observableArrayList("No", "Yes"));
         snapshotChoice.getSelectionModel().selectFirst();
+
+        suctionChoice.setItems(FXCollections.observableArrayList("No", "Yes"));
+        suctionChoice.getSelectionModel().selectFirst();
+
+        progress.setMaxWidth(Double.MAX_VALUE);
     }
 
 
     @FXML
     private void runAll() {
+//        showAlert(Alert.AlertType.CONFIRMATION, "", "", String.valueOf(Long.parseLong(totalTimeSteps.getText())));
 
         WritetoIOFile();
+        mainScrollPane.setVvalue(1.0);
+
+        testF();
 //        cfdSC();
 //outputTA.setText("df");
 
 //        showAlert(Alert.AlertType.CONFIRMATION, "", "Registration Successful!", Nyp.getText());
     }
 
+
+    private void testF() {
+        Task task = new Task<Void>() {
+            @Override
+            public Void call() {
+                try {
+                    JSch jsch = new JSch();
+
+                    outputTA.setText("Transferring files to Super Computer's Compute Node...\n");
+
+
+                    Session session = jsch.getSession("dpl", "localhost", 22);
+                    session.setPassword("dpl");
+
+//                    Session session = jsch.getSession("junaid.ali", "10.9.41.100", 22);
+//                    session.setPassword("ceme@123");
+
+                    java.util.Properties config = new java.util.Properties();
+                    config.put("StrictHostKeyChecking", "no");
+                    session.setConfig(config);
+                    session.connect();
+
+                    Channel channel2 = session.openChannel("sftp");
+                    channel2.connect();
+                    ChannelSftp channelSftp = (ChannelSftp) channel2;
+                    File f = new File("input.dat");
+                    channelSftp.put(new FileInputStream(f),
+                            "/home/dpl/cfd/inputoutputfiles/input.dat"
+//                            "/state/partition1/home4/eme/junaid.ali/cfd/inputoutputfiles/input.dat"
+                    );
+                    outputTA.setText("Transfer Complete\n\nStarting Simulation\n\n");
+                    channel2.disconnect();
+
+
+                    ChannelShell channel = (ChannelShell) session.openChannel("shell");
+//        PipedInputStream pis = new PipedInputStream();
+//        PipedOutputStream pos = new PipedOutputStream();
+//        channel.setInputStream(new PipedInputStream(pos));
+//        channel.setOutputStream(new PipedOutputStream(pis));
+
+
+                    channel.connect();
+//        pos.write("ls".getBytes(StandardCharsets.UTF_8));
+//        pos.write("ssh compute-0-18".getBytes(StandardCharsets.UTF_8));
+//
+//        pos.flush();
+//        System.out.println(pis.read());
+//        pis.close();
+//        pos.close();
+
+                    OutputStream ops = channel.getOutputStream();
+                    PrintStream ps = new PrintStream(ops, true);
+
+                    InputStream in = channel.getInputStream();
+                    byte[] bt = new byte[1024];
+
+//                    ps.println("ls");
+//                    ps.println("ssh compute-0-18");
+//                    ps.println("ls");
+
+
+//                    ps.println("cd circle2d");
+                    ps.println("cd cfd");
+
+                    ps.println("./job");
+
+                    long iterations = 0;
+                    long totalIterations = Long.parseLong(totalTimeSteps.getText());
+                    String line = "";
+
+                    while (true) {
+
+                        while (in.available() > 0) {
+                            int i = in.read(bt, 0, 1024);
+                            if (i < 0)
+                                break;
+                            line = new String(bt, 0, i);
+                            //displays the output of the command executed.
+                            System.out.println(line);
+                            outputTA.appendText(line);
+
+//                                showAlert(Alert.AlertType.CONFIRMATION,"","O","P");
+
+                            if (line.contains("Time Step")) {
+                                for (int j = 0; j < countMatches(line, "Time Step"); j++) {
+                                    iterations++;
+                                }
+//                                updateProgress(startzero, 250);
+                                updateProgress(iterations, totalIterations);
+
+                                if ((iterations < (totalIterations - 10)) && ((iterations % 7) == 0)) {
+                                    outputTA.setText(line);
+                                }
+
+
+                            }
+
+                        }
+
+                        if (iterations == totalIterations) {
+//                            showInfo("Iteration", "IT");
+
+                            System.out.println("Iterational Exit");
+                            break;
+                        }
+
+
+                        if (channel.isClosed()) {
+//                            showInfo("Channel", "Closed");
+                            System.out.println("Channel Exit");
+                            break;
+                        }
+                        Thread.sleep(1000);
+
+                    }
+
+                    outputTA.appendText("\n\n\n Simulation Complete");
+                    channel.disconnect();
+                    session.disconnect();
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        };
+        progress.progressProperty().bind(task.progressProperty());
+        new Thread(task).start();
+    }
+
     //String[] commands = {"ls","cd mpicheck","mpirun ranker.x"};
-    String commands = "cd circle2d;cd inputoutputfiles;mpirun -np 4 ../bin/main3D.exe";
+//    String commands = "cd circle2d;cd inputoutputfiles;mpirun -np 4 ../bin/main3D.exe";
+    String commands = "cd cfd;./job";
 //    commands=new String(new byte[4],0,1);
 
     private void cfdSC() {
@@ -69,9 +216,17 @@ public class Controller {
                 try {
                     JSch jsch = new JSch();
 
-                    //                    Session session = jsch.getSession("junaid.ali", "111.68.97.5", 2299);
+//                    Session session = jsch.getSession("junaid.ali", "10.9.41.100", 22);
 //                    session.setPassword("ceme@123");
 
+//                    int forwardedPort = 2222;
+//                    session.setPortForwardingL(forwardedPort,"compute-0-18",22);
+
+//                    Session computeSession=jsch.getSession("junaid.ali","localhost",forwardedPort);
+//                    java.util.Properties config1 = new java.util.Properties();
+//                    config1.put("StrictHostKeyChecking", "no");
+//                    computeSession.setConfig(config1);
+//                    computeSession.connect();
 
                     Session session = jsch.getSession("dpl", "localhost", 22);
                     session.setPassword("dpl");
@@ -93,7 +248,7 @@ public class Controller {
 
                     channel.connect();
 
-                    int startzero = 0;
+
 //
 //                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 //                    String output;
@@ -130,6 +285,9 @@ public class Controller {
                     byte[] tmp = new byte[1024];
                     String line = "";
                     String outputTAS = "";
+                    long iterations = 0;
+                    long totalIterations = Long.parseLong(totalTimeSteps.getText());
+
 
                     while (true) {
                         while (in.available() > 0) {
@@ -145,8 +303,15 @@ public class Controller {
 //                                showAlert(Alert.AlertType.CONFIRMATION,"","O","P");
 
                             if (line.contains("Time Step")) {
-                                startzero++;
-                                updateProgress(startzero, 250);
+                                for (int j = 0; j < countMatches(line, "Time Step"); j++) {
+                                    iterations++;
+                                }
+//                                updateProgress(startzero, 250);
+                                updateProgress(iterations, totalIterations);
+
+                                if ((iterations < (totalIterations - 10)) && ((iterations % 5) == 0)) {
+                                    outputTA.setText(line);
+                                }
 
 
                             }
@@ -159,8 +324,7 @@ public class Controller {
 //                            }
 
                         }
-                        if (channel.isClosed()
-                        ) {
+                        if (channel.isClosed()) {
                             System.out.println("exit:" + channel.getExitStatus());
                             break;
                         }
@@ -211,13 +375,29 @@ public class Controller {
     }
 
 
-    private void showAlert(Alert.AlertType alertType, String owner, String title, String message) {
-        Alert alert = new Alert(alertType);
+    private void showInfo(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
 //        alert.initOwner(owner);
         alert.show();
+    }
+
+    public static int countMatches(String str, String sub) {
+        if ((str != null && str.isEmpty()) || (sub != null && sub.isEmpty())) {
+            return 0;
+        }
+//        if (isEmpty(str) || isEmpty(sub)) {
+//            return 0;
+//        }
+        int count = 0;
+        int idx = 0;
+        while ((idx = str.indexOf(sub, idx)) != -1) {
+            count++;
+            idx += sub.length();
+        }
+        return count;
     }
 
 
@@ -253,7 +433,7 @@ public class Controller {
             io.write("Cs, alpha\n");
             io.write(cs.getText() + "," + alpha.getText() + "\n");
             io.write("Write Output files(TECPLOT LiftDrag LiftDragSection)\n");
-            io.write("\n");
+            io.write(tecplotstart.getText() + "," + tecplotinterval.getText() + "," + tecplotstop.getText() + "," + tecplotliftdrag.getText() + "," + tecplotliftdragsection.getText() + "\n");
             io.write("Location of Probes-Should be in Domain of processor specified\n");
             io.write(lp11.getText() + "," + lp12.getText() + "," + lp13.getText() + "," + lp14.getText() + "\n");
             io.write(lp21.getText() + "," + lp22.getText() + "," + lp23.getText() + "," + lp24.getText() + "\n");
@@ -263,15 +443,15 @@ public class Controller {
             io.write("Amplitude(X,Y,Z)&Freq(X,Y,Z)\n");
             io.write(ampX.getText() + "," + ampY.getText() + "," + ampZ.getText() + "," + freqX.getText() + "," + freqY.getText() + "," + freqZ.getText() + "\n");
             io.write("DYN EQN Coeff (cKy,cDy,cFy)\n");
-            io.write(cKy.getText()+ "," + cDy.getText()+ "," + cFy.getText()+"\n");
+            io.write(cKy.getText() + "," + cDy.getText() + "," + cFy.getText() + "\n");
             io.write("SnapshotChoice(N0=0 YES=1),TotalSnapshots,StartSnapshots,DumpSnapshot Interval\n");
-            io.write(snapshotChoice.getSelectionModel().getSelectedIndex()+ "," + totalSnapshots.getText()+ "," + startSnapshots.getText()+ "," + dumpSnapshotInterval.getText()+"\n");
+            io.write(snapshotChoice.getSelectionModel().getSelectedIndex() + "," + totalSnapshots.getText() + "," + startSnapshots.getText() + "," + dumpSnapshotInterval.getText() + "\n");
             io.write("SUCTION Choice\n");
-            io.write(suctionChoice1.getText()+ "," + suctionChoice2.getText()+ "," + suctionChoice3.getText()+"\n");
+            io.write(suctionChoice.getSelectionModel().getSelectedIndex() + "," + suctionChoice2.getText() + "," + suctionChoice3.getText() + "\n");
             io.write("Suction/Blowing velocity (-ve for suction and +ve for blowing)Vel,Freq,Phase\n");
-            io.write(suctionVelocity.getText()+ "," + suctionFreq.getText()+ "," + suctionPhase.getText()+"\n");
+            io.write(suctionVelocity.getText() + "," + suctionFreq.getText() + "," + suctionPhase.getText() + "\n");
             io.write("Synthetic Jet Index (sJ1 eJ1 sJ2 eJ2)\n");
-            io.write(sJ1.getText()+ "," + eJ1.getText()+ "," + sJ2.getText()+ "," + eJ2.getText()+"\n");
+            io.write(sJ1.getText() + "," + eJ1.getText() + "," + sJ2.getText() + "," + eJ2.getText() + "\n");
 
             io.close();
         } catch (Exception e) {
