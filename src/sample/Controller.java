@@ -137,6 +137,7 @@ public class Controller {
                     String host = configFile.getProperty("host", "localhost");
                     int port = Integer.parseInt(configFile.getProperty("port", "22"));
                     String inputFileDestination = configFile.getProperty("inputFileDestination", "/home/dpl/cfd/inputoutputfiles/input.dat");
+                    String tecPlotFile=configFile.getProperty("tecPlotFile","/home/dpl/cfd/inputoutputfiles/TecPlot");
 
                     outputTA.setText("Transferring files to Super Computer's Compute Node...\n");
 
@@ -234,7 +235,7 @@ public class Controller {
 
 
                         if (line.contains("Simulation Complete")) {
-                            channelSftp.get("/home/dpl/cfd/inputoutputfiles/TecPlot","TecPlot");
+                            channelSftp.get(tecPlotFile,"TecPlot.dat");
                             channel2.disconnect();
                             break;
                         }
@@ -275,7 +276,7 @@ public class Controller {
 
 
 
-                    outputTA.appendText("\n\n\n Simulation Complete");
+//                    outputTA.appendText("\n\n\n Simulation Complete");
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
@@ -292,6 +293,7 @@ public class Controller {
                         public void run() {
                             if (task.isCancelled()) {
                                 outputTA.appendText("\n\nSimulation was stopped!");
+
                             }
                             else {
                                 outputTA.appendText("\n\n\n\n\nAn error occurred!!!\n\nTry again\n\n");

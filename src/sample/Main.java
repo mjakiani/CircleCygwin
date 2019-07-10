@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -65,9 +66,18 @@ public class Main extends Application {
 //        StackPane root = new StackPane();
 //        root.getChildren().add(btn);
 
+//        primaryStage.getIcons().add(new Image("/cfdicon.png"));
+
+        Image applicationIcon = new Image(getClass().getResourceAsStream("/appicon.png"));
+        primaryStage.getIcons().add(applicationIcon);
+
         primaryStage.setTitle("Circle 2D CFD");
+
         primaryStage.setScene(new Scene(root, 1024, 768));
         primaryStage.setMaximized(true);
+
+
+
         primaryStage.show();
     }
 
