@@ -2,6 +2,7 @@ package sample;
 
 import com.intellij.diagnostic.hprof.action.SystemTempFilenameSupplier;
 import com.jcraft.jsch.*;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import org.apache.http.io.SessionInputBuffer;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 
 //import static org.apache.commons.lang3.StringUtils.isEmpty;
 
@@ -36,6 +38,11 @@ public class Controller {
     ChoiceBox startOption, turbulenceModel, motionChoice, snapshotChoice, suctionChoice;
     @FXML
     ScrollPane mainScrollPane;
+    @FXML
+    Button runB;
+
+    Properties configFile;
+    Task task;
 
 
     @FXML
@@ -63,10 +70,18 @@ public class Controller {
     private void runAll() {
 //        showAlert(Alert.AlertType.CONFIRMATION, "", "", String.valueOf(Long.parseLong(totalTimeSteps.getText())));
 
-        WritetoIOFile();
-        mainScrollPane.setVvalue(1.0);
 
-        testF();
+        if ((task != null) && task.isRunning()) {
+            task.cancel();
+            runB.setText("Run");
+            progress.progressProperty().unbind();
+            progress.setProgress(0);
+
+        } else {
+            WritetoIOFile();
+            mainScrollPane.setVvalue(1.0);
+            testF();
+        }
 //        cfdSC();
 //outputTA.setText("df");
 
@@ -74,19 +89,63 @@ public class Controller {
     }
 
 
+    private void readConfigFile() {
+        configFile = new Properties();
+        String filename = "config.txt";
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(filename);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            configFile.load(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            inputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
     private void testF() {
-        Task task = new Task<Void>() {
+
+        task = new Task<Void>() {
             @Override
             public Void call() {
                 try {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            runB.setText("Stop");
+                        }
+                    });
+
+
                     JSch jsch = new JSch();
+
+                    readConfigFile();
+
+                    String user = configFile.getProperty("user", "dpl");
+                    String pass = configFile.getProperty("pass", "dpl");
+                    String host = configFile.getProperty("host", "localhost");
+                    int port = Integer.parseInt(configFile.getProperty("port", "22"));
+                    String inputFileDestination = configFile.getProperty("inputFileDestination", "/home/dpl/cfd/inputoutputfiles/input.dat");
 
                     outputTA.setText("Transferring files to Super Computer's Compute Node...\n");
 
+                    Session session = jsch.getSession(user, host, port);
+                    session.setPassword(pass);
 
-                    Session session = jsch.getSession("dpl", "localhost", 22);
-                    session.setPassword("dpl");
-
+//                    Session session = jsch.getSession("dpl", "localhost", 22);
+//                    session.setPassword("dpl");
+//
 //                    Session session = jsch.getSession("junaid.ali", "10.9.41.100", 22);
 //                    session.setPassword("ceme@123");
 
@@ -100,11 +159,12 @@ public class Controller {
                     ChannelSftp channelSftp = (ChannelSftp) channel2;
                     File f = new File("input.dat");
                     channelSftp.put(new FileInputStream(f),
-                            "/home/dpl/cfd/inputoutputfiles/input.dat"
+//                            "/home/dpl/cfd/inputoutputfiles/input.dat"
 //                            "/state/partition1/home4/eme/junaid.ali/cfd/inputoutputfiles/input.dat"
+                            inputFileDestination
                     );
                     outputTA.setText("Transfer Complete\n\nStarting Simulation\n\n");
-                    channel2.disconnect();
+//                    channel2.disconnect();
 
 
                     ChannelShell channel = (ChannelShell) session.openChannel("shell");
@@ -172,12 +232,34 @@ public class Controller {
 
                         }
 
-                        if (iterations == totalIterations) {
-//                            showInfo("Iteration", "IT");
 
-                            System.out.println("Iterational Exit");
+                        if (line.contains("Simulation Complete")) {
+                            channelSftp.get("/home/dpl/cfd/inputoutputfiles/TecPlot","TecPlot");
+                            channel2.disconnect();
                             break;
                         }
+
+//                        if (iterations == totalIterations) {
+////                            showInfo("Iteration", "IT");
+//
+////                            Channel channelExec = session.openChannel("exec");
+////
+////
+////                            ChannelExec exec = (ChannelExec) channelExec;
+////                            exec.setCommand("cd cfd;cd inputoutputfiles;cat Plot3D* > TecPlot");
+////                            channelExec.connect();
+//
+////                            ps.println("cd inputoutputfiles");
+////                            ps.println("cat Plot3D* > TecPlot");
+////                            channelExec.disconnect();
+//
+//
+//
+//
+//
+//                            System.out.println("Iterational Exit");
+//                            break;
+//                        }
 
 
                         if (channel.isClosed()) {
@@ -189,11 +271,35 @@ public class Controller {
 
                     }
 
+
+
+
+
                     outputTA.appendText("\n\n\n Simulation Complete");
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            runB.setText("Run");
+                        }
+                    });
+
                     channel.disconnect();
                     session.disconnect();
                 } catch (Exception e) {
 
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (task.isCancelled()) {
+                                outputTA.appendText("\n\nSimulation was stopped!");
+                            }
+                            else {
+                                outputTA.appendText("\n\n\n\n\nAn error occurred!!!\n\nTry again\n\n");
+                            }
+                            runB.setText("Run");
+                        }
+                    });
+                    updateProgress(0,0);
                     e.printStackTrace();
                 }
                 return null;
@@ -201,6 +307,8 @@ public class Controller {
         };
         progress.progressProperty().bind(task.progressProperty());
         new Thread(task).start();
+
+
     }
 
     //String[] commands = {"ls","cd mpicheck","mpirun ranker.x"};

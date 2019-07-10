@@ -7,7 +7,7 @@ Domain size (Radius Length)D
 Domain Decomposition (Py Pz)
 4,1
 Total Time Steps
-1000
+12
 Re dt
 100.0,0.001
 Max Iteration (vel pressure)

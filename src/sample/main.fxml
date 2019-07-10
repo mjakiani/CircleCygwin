@@ -103,7 +103,7 @@
                     <Label text="Pressure" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="19" />
                     <Label text="Velocity" GridPane.halignment="RIGHT" GridPane.rowIndex="20" />
                     <Label text="Pressure" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="20" />
-                    <Button id="run" mnemonicParsing="false" onAction="#runAll" text="Run" GridPane.halignment="RIGHT" GridPane.rowIndex="34" />
+                    <Button id="run" fx:id="runB" mnemonicParsing="false" onAction="#runAll" text="Run" GridPane.halignment="RIGHT" GridPane.rowIndex="34" />
                   <TextField fx:id="re" text="100.0" GridPane.columnIndex="1" GridPane.rowIndex="33" />
                   <TextField fx:id="dt" text="0.001" GridPane.columnIndex="3" GridPane.rowIndex="33" />
                   <TextField fx:id="maxIterationVelocity" text="30" GridPane.columnIndex="1" GridPane.rowIndex="18" />
