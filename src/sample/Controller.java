@@ -137,7 +137,7 @@ public class Controller {
                     String host = configFile.getProperty("host", "localhost");
                     int port = Integer.parseInt(configFile.getProperty("port", "22"));
                     String inputFileDestination = configFile.getProperty("inputFileDestination", "/home/dpl/cfd/inputoutputfiles/input.dat");
-                    String tecPlotFile=configFile.getProperty("tecPlotFile","/home/dpl/cfd/inputoutputfiles/TecPlot");
+                    String tecPlotFile = configFile.getProperty("tecPlotFile", "/home/dpl/cfd/inputoutputfiles/TecPlot");
 
                     outputTA.setText("Transferring files to Super Computer's Compute Node...\n");
 
@@ -224,7 +224,7 @@ public class Controller {
 //                                updateProgress(startzero, 250);
                                 updateProgress(iterations, totalIterations);
 
-                                if ((iterations < (totalIterations - 10)) && ((iterations % 7) == 0)) {
+                                if ((iterations < (totalIterations - 20)) && ((iterations % 7) == 0)) {
                                     outputTA.setText(line);
                                 }
 
@@ -235,7 +235,7 @@ public class Controller {
 
 
                         if (line.contains("Simulation Complete")) {
-                            channelSftp.get(tecPlotFile,"TecPlot.dat");
+                            channelSftp.get(tecPlotFile, "TecPlot.dat");
                             channel2.disconnect();
                             break;
                         }
@@ -268,12 +268,9 @@ public class Controller {
                             System.out.println("Channel Exit");
                             break;
                         }
-                        Thread.sleep(1000);
+                        Thread.sleep(500);
 
                     }
-
-
-
 
 
 //                    outputTA.appendText("\n\n\n Simulation Complete");
@@ -294,14 +291,13 @@ public class Controller {
                             if (task.isCancelled()) {
                                 outputTA.appendText("\n\nSimulation was stopped!");
 
-                            }
-                            else {
+                            } else {
                                 outputTA.appendText("\n\n\n\n\nAn error occurred!!!\n\nTry again\n\n");
                             }
                             runB.setText("Run");
                         }
                     });
-                    updateProgress(0,0);
+                    updateProgress(0, 0);
                     e.printStackTrace();
                 }
                 return null;
