@@ -13,7 +13,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource(
+                "main.fxml"
+//        "tree.fxml"
+        ));
 
 
 //        Button btn = new Button();
@@ -74,7 +77,7 @@ public class Main extends Application {
         primaryStage.setTitle("Circle 2D CFD");
 
         primaryStage.setScene(new Scene(root, 1024, 768));
-        primaryStage.setMaximized(true);
+//        primaryStage.setMaximized(true);
 
 
 
@@ -86,7 +89,7 @@ public class Main extends Application {
         launch(args);
     }
 
-    public void WritetoIOFile() {
+  /*  public void WritetoIOFile() {
         try {
             FileWriter fileWriter=new FileWriter("input.dat");
             BufferedWriter io = new BufferedWriter(fileWriter);
@@ -143,5 +146,5 @@ public class Main extends Application {
         catch (Exception e ){
             e.printStackTrace();
         }
-    }
+    }*/
 }

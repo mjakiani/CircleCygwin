@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -21,319 +26,673 @@
                 <Insets bottom="10" left="10" right="10" top="10" />
             </padding>
             <children>
-                <GridPane hgap="10" style="-fx-border-color: green;" vgap="10">
-                    <columnConstraints>
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                    </rowConstraints>
-                    <children>
-
-                        <Label text=" Pre-Processing">
-                            <font>
-                                <Font name="System Bold" size="18.0" />
-                            </font>
-                        </Label>
-
-                        <Label text="Nxp" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                        <TextField fx:id="Nxp" text="193" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Nyp" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                        <TextField fx:id="Nyp" text="257" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <Label text="Nzp (r theta z)" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                        <TextField fx:id="Nzp" text="2" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-
-
-                        <Label text="Start Option" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                        <ChoiceBox fx:id="startOption" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label text="Write Restart File" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                        <TextField fx:id="writeRestartFile" text="100" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                        <Label text="Record File" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                        <TextField fx:id="recordFile" text="990000" GridPane.columnIndex="5" GridPane.rowIndex="2" />
-
-                        <Label text="Domain Size" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                        <TextField fx:id="domainSize" text="25.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label text="Radius Length D" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                        <TextField fx:id="radiusLengthD" text="1.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-
-                        <Label text="Py" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                        <TextField fx:id="Py" text="4" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label text="Pz" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                        <TextField fx:id="Pz" text="1" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                        <Label text="Domain Decomposition" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-
-                        <Label text="Motion Choice" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                        <ChoiceBox fx:id="motionChoice" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <Label text="Start Motion" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                        <TextField fx:id="startMotion" text="1000" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-
-                        <Label text="X" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-                        <TextField fx:id="ampX" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <Label text="Y" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-                        <TextField fx:id="ampY" text="0.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
-                        <Label text="Z" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-                        <TextField fx:id="ampZ" text="0.0" GridPane.columnIndex="5" GridPane.rowIndex="6" />
-                        <Label text="Amplitude" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-
-                        <Label text="X" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
-                        <TextField fx:id="freqX" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                        <Label text="Y" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
-                        <TextField fx:id="freqY" text="0.0" GridPane.columnIndex="3" GridPane.rowIndex="7" />
-                        <Label text="Z" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
-                        <TextField fx:id="freqZ" text="0.0" GridPane.columnIndex="5" GridPane.rowIndex="7" />
-                        <Label text="Frequency" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
-
-                        <Label text="cKy" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
-                        <TextField fx:id="cKy" text="1.134" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                        <Label text="cDy" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
-                        <TextField fx:id="cDy" text="0.00256" GridPane.columnIndex="3" GridPane.rowIndex="8" />
-                        <Label text="cFy" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
-                        <TextField fx:id="cFy" text="0.00427" GridPane.columnIndex="5" GridPane.rowIndex="8" />
-                        <Label text="DYN EQN Coeff" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="8" />
-
-                        <Label text="Suction Choice" GridPane.halignment="RIGHT" GridPane.rowIndex="9" />
-                        <ChoiceBox fx:id="suctionChoice" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                        <Label text="Staring With" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="9" />
-                        <TextField fx:id="suctionChoice2" text="20000" GridPane.columnIndex="3" GridPane.rowIndex="9" />
-                        <Label text="Interval" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="9" />
-                        <TextField fx:id="suctionChoice3" text="2" GridPane.columnIndex="5" GridPane.rowIndex="9" />
-
-                        <Label text="Suction/Blowing Velocity" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
-                        <TextField fx:id="suctionVelocity" text="-0.2" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                        <Label text="Frequency" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
-                        <TextField fx:id="suctionFreq" text="0.0" GridPane.columnIndex="3" GridPane.rowIndex="10" />
-                        <Label text="Phase" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
-                        <TextField fx:id="suctionPhase" text="90.0" GridPane.columnIndex="5" GridPane.rowIndex="10" />
-
-                        <Label text="sJ1" GridPane.halignment="RIGHT" GridPane.rowIndex="11" />
-                        <TextField fx:id="sJ1" text="0" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-                        <Label text="sJ2" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="11" />
-                        <TextField fx:id="sJ2" text="242" GridPane.columnIndex="3" GridPane.rowIndex="11" />
-                        <Label text="Synthetic Jet Index" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="11" />
-
-                        <Label text="eJ1" GridPane.halignment="RIGHT" GridPane.rowIndex="12" />
-                        <TextField fx:id="eJ1" text="15" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-                        <Label text="eJ2" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="12" />
-                        <TextField fx:id="eJ2" text="257" GridPane.columnIndex="3" GridPane.rowIndex="12" />
-
-                        <Label text="Location of Probes" GridPane.halignment="RIGHT" GridPane.rowIndex="13" />
-                        <TextField fx:id="lp11" text="0" GridPane.columnIndex="1" GridPane.rowIndex="13" />
-                        <TextField fx:id="lp12" text="25" GridPane.columnIndex="2" GridPane.rowIndex="13" />
-                        <TextField fx:id="lp13" text="20" GridPane.columnIndex="3" GridPane.rowIndex="13" />
-                        <TextField fx:id="lp14" text="1" GridPane.columnIndex="4" GridPane.rowIndex="13" />
-                        <TextField fx:id="lp21" text="0" GridPane.columnIndex="1" GridPane.rowIndex="14" />
-                        <TextField fx:id="lp22" text="40" GridPane.columnIndex="2" GridPane.rowIndex="14" />
-                        <TextField fx:id="lp23" text="20" GridPane.columnIndex="3" GridPane.rowIndex="14" />
-                        <TextField fx:id="lp24" text="1" GridPane.columnIndex="4" GridPane.rowIndex="14" />
-                        <TextField fx:id="lp31" text="0" GridPane.columnIndex="1" GridPane.rowIndex="15" />
-                        <TextField fx:id="lp32" text="60" GridPane.columnIndex="2" GridPane.rowIndex="15" />
-                        <TextField fx:id="lp33" text="20" GridPane.columnIndex="3" GridPane.rowIndex="15" />
-                        <TextField fx:id="lp34" text="1" GridPane.columnIndex="4" GridPane.rowIndex="15" />
-
-                    </children>
-                    <padding>
-                        <Insets bottom="10.0" />
-                    </padding>
-                </GridPane>
-                <GridPane hgap="10" style="-fx-border-color: green;" vgap="10">
-                    <columnConstraints>
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                    </rowConstraints>
-                    <children>
-                        <Label text=" Numerical Scheme" GridPane.columnSpan="2">
-                            <font>
-                                <Font name="System Bold" size="18.0" />
-                            </font>
-                        </Label>
-
-
-                        <Label text="Velocity" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                        <TextField fx:id="maxIterationVelocity" text="30" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Pressure" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                        <TextField fx:id="maxIterationPressure" text="800" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <Label text="Max Iteration" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-
-                        <Label text="Velocity" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                        <TextField fx:id="maxResidualVelocity" text="0.00001" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label text="Pressure" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                        <TextField fx:id="maxResidualPressure" text="0.00001" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                        <Label text="Max Residual" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-
-                        <Label text="Velocity" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                        <TextField fx:id="relaxationFactorVelocity" text="1.5" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label text="Pressure" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                        <TextField fx:id="relaxationFactorPressure" text="1.1" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                        <Label text="Relaxation Factor" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-
-                        <Label text="AOA" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                        <TextField fx:id="inlet1" text="1.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label text="u (x-velocity)" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                        <TextField fx:id="inlet1u" text="0.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                        <Label text="v (y-velocity)" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                        <TextField fx:id="inlet1v" text="0.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
-                        <Label text="w (z-velocity)" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                        <TextField fx:id="inlet1w" text="0.0" GridPane.columnIndex="7" GridPane.rowIndex="4" />
-
-                        <Label text="AOA" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                        <TextField fx:id="inlet2" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <Label text="u (x-velocity)" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                        <TextField fx:id="inlet2u" text="0.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-                        <Label text="v (y-velocity)" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                        <TextField fx:id="inlet2v" text="0.0" GridPane.columnIndex="5" GridPane.rowIndex="5" />
-                        <Label text="w (z-velocity)" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                        <TextField fx:id="inlet2w" text="0.0" GridPane.columnIndex="7" GridPane.rowIndex="5" />
-
-                        <Label text="AOA" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-                        <TextField fx:id="inlet3" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <Label text="u (x-velocity)" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-                        <TextField fx:id="inlet3u" text="0.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
-                        <Label text="v (y-velocity)" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-                        <TextField fx:id="inlet3v" text="0.0" GridPane.columnIndex="5" GridPane.rowIndex="6" />
-                        <Label text="w (z-velocity)" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-                        <TextField fx:id="inlet3w" text="0.0" GridPane.columnIndex="7" GridPane.rowIndex="6" />
-
-                        <Label text="Turbulence Model" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
-                        <ChoiceBox fx:id="turbulenceModel" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-
-                        <Label text="Cs" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
-                        <TextField fx:id="cs" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                        <Label text="Alpha" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
-                        <TextField fx:id="alpha" text="0.0" GridPane.columnIndex="3" GridPane.rowIndex="8" />
-
-
-                    </children>
-                    <padding>
-                        <Insets bottom="10.0" />
-                    </padding>
-
-
-                </GridPane>
-                <GridPane hgap="10" style="-fx-border-color: green;" vgap="10">
-                    <columnConstraints>
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints />
-                    </rowConstraints>
-                    <children>
-                        <Label text=" Post-Processing">
-                            <font>
-                                <Font name="System Bold" size="18.0" />
-                            </font>
-                        </Label>
-
-                        <Label text="Start Timestep" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                        <TextField fx:id="tecplotstart" text="1000" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Interval Timestep" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                        <TextField fx:id="tecplotinterval" text="1000" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <Label text="Stop Timestep" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                        <TextField fx:id="tecplotstop" text="100000" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-                        <Label text="TECPLOT Output" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-
-                        <Label text="LiftDrag" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                        <TextField fx:id="tecplotliftdrag" text="5" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label text="LiftDragSection" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                        <TextField fx:id="tecplotliftdragsection" text="5" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-
-                        <Label text="Snapshot Choice for POD" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                        <ChoiceBox fx:id="snapshotChoice" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label text="Total Snapshots" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                        <TextField fx:id="totalSnapshots" text="40" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                        <Label text="Start Snapshots" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                        <TextField fx:id="startSnapshots" text="28500" GridPane.columnIndex="5" GridPane.rowIndex="3" />
-                        <Label text="Dump Snapshot Interval" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                        <TextField fx:id="dumpSnapshotInterval" text="160" GridPane.columnIndex="7" GridPane.rowIndex="3" />
-
-
-                    </children>
-                    <padding>
-                        <Insets bottom="10.0" />
-                    </padding>
-                </GridPane>
-                <GridPane hgap="10" style="-fx-border-color: green;" vgap="10">
-                    <columnConstraints>
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                        <ColumnConstraints prefWidth="150.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints />
-                    </rowConstraints>
-                    <children>
-                        <Label text=" Simulation Size">
-                            <font>
-                                <Font name="System Bold" size="18.0" />
-                            </font>
-                        </Label>
-
-
-                        <Label text="Total Time Steps" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                        <TextField fx:id="totalTimeSteps" text="100000" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
-                        <Label text="Re" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                        <TextField fx:id="re" text="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label text="dt" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                        <TextField fx:id="dt" text="0.001" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-
-                        <Button id="run" fx:id="runB" mnemonicParsing="false" onAction="#runAll" text="Run" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                    </children>
-                    <padding>
-                        <Insets bottom="10.0" />
-                    </padding>
-                </GridPane>
+            <TabPane prefHeight="600.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+              <tabs>
+                <Tab text="Pre-Processing">
+                  <content>
+                    <AnchorPane minWidth="0.0">
+                           <children>
+                              <Accordion AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <panes>
+                                  <TitledPane animated="false" text="Domain Size">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <GridPane>
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Label text="Nxp" />
+                                                      <TextField fx:id="Nxp" text="193" GridPane.columnIndex="1" />
+                                                      <Label text="Nyp" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="Nyp" text="257" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                      <Label text="Nzp (r theta z)" GridPane.rowIndex="2" />
+                                                      <TextField fx:id="Nzp" text="2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                                   </padding>
+                                                </GridPane>
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </TitledPane>
+                                  <TitledPane animated="false" text="Start Option">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <GridPane>
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Label text="Start Option" />
+                                                      <ChoiceBox fx:id="startOption" prefWidth="150.0" GridPane.columnIndex="1" />
+                                                      <Label text="Write Restart File" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="writeRestartFile" text="100" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                      <Label text="Record File" GridPane.rowIndex="2" />
+                                                      <TextField fx:id="recordFile" text="990000" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                   </children>
+                                                </GridPane>
+                                             </children></AnchorPane>
+                                    </content>
+                                  </TitledPane>
+                                  <TitledPane animated="false" text="Domain Decomposition">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <GridPane>
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Label text="Domain Size" />
+                                                      <TextField fx:id="domainSize" text="25.0" GridPane.columnIndex="1" />
+                                                      <Label text="Radius Length D" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="radiusLengthD" text="1.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                      <Label text="Py" GridPane.rowIndex="2" />
+                                                      <TextField fx:id="Py" text="4" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                      <Label text="Pz" GridPane.rowIndex="3" />
+                                                      <TextField fx:id="Pz" text="1" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                   </children>
+                                                </GridPane>
+                                             </children></AnchorPane>
+                                    </content>
+                                  </TitledPane>
+                                    <TitledPane animated="false" text="Motion">
+                                      <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0">
+                                             <children>
+                                                <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                                   <children>
+                                                      <GridPane>
+                                                        <columnConstraints>
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                         <children>
+                                                            <Label text="Motion Choice" />
+                                                            <ChoiceBox fx:id="motionChoice" prefWidth="150.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
+                                                         </children>
+                                                      </GridPane>
+                                                      <Accordion>
+                                                        <panes>
+                                                          <TitledPane animated="false" text="Amplitude">
+                                                            <content>
+                                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                                     <children>
+                                                                        <GridPane>
+                                                                          <columnConstraints>
+                                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                          </columnConstraints>
+                                                                          <rowConstraints>
+                                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                          </rowConstraints>
+                                                                           <children>
+                                                                              <Label text="X" />
+                                                                              <TextField fx:id="ampX" text="0.0" GridPane.columnIndex="1" />
+                                                                              <Label text="Y" GridPane.rowIndex="1" />
+                                                                              <TextField fx:id="ampY" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                              <Label text="Z" GridPane.rowIndex="2" />
+                                                                              <TextField fx:id="ampZ" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                           </children>
+                                                                        </GridPane>
+                                                                     </children></AnchorPane>
+                                                            </content>
+                                                          </TitledPane>
+                                                          <TitledPane animated="false" text="Frequency">
+                                                            <content>
+                                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                                     <children>
+                                                                        <GridPane>
+                                                                          <columnConstraints>
+                                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                          </columnConstraints>
+                                                                          <rowConstraints>
+                                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                          </rowConstraints>
+                                                                           <children>
+                                                                              <Label text="X" />
+                                                                              <TextField fx:id="freqX" text="0.0" GridPane.columnIndex="1" />
+                                                                              <Label text="Y" GridPane.rowIndex="1" />
+                                                                              <TextField fx:id="freqY" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                              <Label text="Z" GridPane.rowIndex="2" />
+                                                                              <TextField fx:id="freqZ" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                           </children>
+                                                                        </GridPane>
+                                                                     </children></AnchorPane>
+                                                            </content>
+                                                          </TitledPane>
+                                                          <TitledPane animated="false" text="DYN EQN Coeff">
+                                                            <content>
+                                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                                     <children>
+                                                                        <GridPane>
+                                                                          <columnConstraints>
+                                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                          </columnConstraints>
+                                                                          <rowConstraints>
+                                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                          </rowConstraints>
+                                                                           <children>
+                                                                              <Label text="cKy" />
+                                                                              <TextField fx:id="cKy" text="1.134" GridPane.columnIndex="1" />
+                                                                              <Label text="cDy" GridPane.rowIndex="1" />
+                                                                              <TextField fx:id="cDy" text="0.00256" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                              <Label text="cFy" GridPane.rowIndex="2" />
+                                                                              <TextField fx:id="cFy" text="0.00427" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                           </children>
+                                                                        </GridPane>
+                                                                     </children></AnchorPane>
+                                                            </content>
+                                                          </TitledPane>
+                                                        </panes>
+                                                      </Accordion>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                    </TitledPane>
+                                    <TitledPane animated="false" text="Suction">
+                                      <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <VBox>
+                                                   <children>
+                                                      <GridPane>
+                                                        <columnConstraints>
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                         <children>
+                                                            <Label text="Suction Choice" />
+                                                            <ChoiceBox fx:id="suctionChoice" prefWidth="150.0" GridPane.columnIndex="1" />
+                                                         </children>
+                                                      </GridPane>
+                                                      <GridPane>
+                                                        <columnConstraints>
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                         <children>
+                                                            <Label text="Staring With" />
+                                                            <TextField fx:id="suctionChoice2" text="20000" GridPane.columnIndex="1" />
+                                                            <Label text="Interval" GridPane.rowIndex="1" />
+                                                            <TextField fx:id="suctionChoice3" text="2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                            <Label text="Suction/Blowing Velocity" GridPane.rowIndex="2" />
+                                                            <TextField fx:id="suctionVelocity" text="-0.2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                            <Label text="Frequency" GridPane.rowIndex="3" />
+                                                            <TextField fx:id="suctionFreq" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                            <Label text="Phase" GridPane.rowIndex="4" />
+                                                            <TextField fx:id="suctionPhase" text="90.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                            <Label text="sJ1" GridPane.rowIndex="5" />
+                                                            <TextField fx:id="sJ1" text="0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                            <Label text="sJ2" GridPane.rowIndex="6" />
+                                                            <TextField fx:id="sJ2" text="242" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                                            <Label text="eJ1" GridPane.rowIndex="7" />
+                                                            <TextField fx:id="eJ1" text="15" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                                            <Label text="eJ2" GridPane.rowIndex="8" />
+                                                            <TextField fx:id="eJ2" text="257" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                                         </children>
+                                                      </GridPane>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                    </TitledPane>
+                                    <TitledPane animated="false" text="Location of Probes">
+                                      <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <GridPane>
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                    <children>
+                                                        <TextField fx:id="lp11" text="0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                                        <TextField fx:id="lp12" text="25" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                                        <TextField fx:id="lp13" text="20" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                                                        <TextField fx:id="lp14" text="1" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                                                        <TextField fx:id="lp21" text="0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                                        <TextField fx:id="lp22" text="40" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                        <TextField fx:id="lp23" text="20" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                        <TextField fx:id="lp24" text="1" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                        <TextField fx:id="lp31" text="0" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                                        <TextField fx:id="lp32" text="60" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                        <TextField fx:id="lp33" text="20" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                        <TextField fx:id="lp34" text="1" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                                    </children>
+                                                </GridPane>
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                    </TitledPane>
+                                </panes>
+                              </Accordion>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Numerical Scheme">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0">
+                           <children>
+                              <Accordion AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <panes>
+                                  <TitledPane animated="false" text="Max Iteration">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <GridPane>
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Label text="Velocity" />
+                                                      <TextField fx:id="maxIterationVelocity" text="30" GridPane.columnIndex="1" />
+                                                      <Label text="Pressure" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="maxIterationPressure" text="800" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                   </children>
+                                                </GridPane>
+                                             </children></AnchorPane>
+                                    </content>
+                                  </TitledPane>
+                                  <TitledPane animated="false" text="Max Residual">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <GridPane>
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Label text="Velocity" />
+                                                      <TextField fx:id="maxResidualVelocity" text="0.00001" GridPane.columnIndex="1" />
+                                                      <Label text="Pressure" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="maxResidualPressure" text="0.00001" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                   </children>
+                                                </GridPane>
+                                             </children></AnchorPane>
+                                    </content>
+                                  </TitledPane>
+                                  <TitledPane animated="false" text="Relaxation Factor">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <GridPane>
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Label text="Velocity" />
+                                                      <TextField fx:id="relaxationFactorVelocity" text="1.5" GridPane.columnIndex="1" />
+                                                      <Label text="Pressure" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="relaxationFactorPressure" text="1.1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                   </children>
+                                                </GridPane>
+                                             </children></AnchorPane>
+                                    </content>
+                                  </TitledPane>
+                                    <TitledPane animated="false" text="Angle of Attack">
+                                      <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0">
+                                             <children>
+                                                <Accordion AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                                  <panes>
+                                                    <TitledPane animated="false" text="Inlet 1">
+                                                      <content>
+                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <GridPane>
+                                                                    <columnConstraints>
+                                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                    </columnConstraints>
+                                                                    <rowConstraints>
+                                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                    </rowConstraints>
+                                                                     <children>
+                                                                        <Label text="AOA" />
+                                                                        <TextField fx:id="inlet1" text="1.0" GridPane.columnIndex="1" />
+                                                                        <Label text="u (x-velocity)" GridPane.rowIndex="1" />
+                                                                        <TextField fx:id="inlet1u" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                        <Label text="v (y-velocity)" GridPane.rowIndex="2" />
+                                                                        <TextField fx:id="inlet1v" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                        <Label text="w (z-velocity)" GridPane.rowIndex="3" />
+                                                                        <TextField fx:id="inlet1w" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                     </children>
+                                                                  </GridPane>
+                                                               </children>
+                                                            </AnchorPane>
+                                                      </content>
+                                                    </TitledPane>
+                                                    <TitledPane animated="false" text="Inlet 2">
+                                                      <content>
+                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                              <children>
+                                                                  <GridPane>
+                                                                      <columnConstraints>
+                                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                      </columnConstraints>
+                                                                      <rowConstraints>
+                                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                      </rowConstraints>
+                                                                      <children>
+                                                                          <Label text="AOA" />
+                                                                          <TextField fx:id="inlet2" text="0.0" GridPane.columnIndex="1" />
+                                                                          <Label text="u (x-velocity)" GridPane.rowIndex="1" />
+                                                                          <TextField fx:id="inlet2u" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                          <Label text="v (y-velocity)" GridPane.rowIndex="2" />
+                                                                          <TextField fx:id="inlet2v" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                          <Label text="w (z-velocity)" GridPane.rowIndex="3" />
+                                                                          <TextField fx:id="inlet2w" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                      </children>
+                                                                  </GridPane>
+                                                              </children>
+                                                          </AnchorPane>
+                                                      </content>
+                                                    </TitledPane>
+                                                    <TitledPane animated="false" text="Inlet 3">
+                                                      <content>
+                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                              <children>
+                                                                  <GridPane>
+                                                                      <columnConstraints>
+                                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                      </columnConstraints>
+                                                                      <rowConstraints>
+                                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                      </rowConstraints>
+                                                                      <children>
+                                                                          <Label text="AOA" />
+                                                                          <TextField fx:id="inlet3" text="0.0" GridPane.columnIndex="1" />
+                                                                          <Label text="u (x-velocity)" GridPane.rowIndex="1" />
+                                                                          <TextField fx:id="inlet3u" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                          <Label text="v (y-velocity)" GridPane.rowIndex="2" />
+                                                                          <TextField fx:id="inlet3v" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                          <Label text="w (z-velocity)" GridPane.rowIndex="3" />
+                                                                          <TextField fx:id="inlet3w" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                      </children>
+                                                                  </GridPane>
+                                                              </children>
+                                                          </AnchorPane>
+                                                      </content>
+                                                    </TitledPane>
+                                                  </panes>
+                                                </Accordion>
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                    </TitledPane>
+                                    <TitledPane animated="false" text="Turbulence Model">
+                                      <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <VBox>
+                                                   <children>
+                                                      <GridPane>
+                                                        <columnConstraints>
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                         <children>
+                                                            <Label text="Turbulence Model" />
+                                                            <ChoiceBox fx:id="turbulenceModel" prefWidth="150.0" GridPane.columnIndex="1" />
+                                                         </children>
+                                                      </GridPane>
+                                                      <GridPane>
+                                                        <columnConstraints>
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                         <children>
+                                                            <Label text="Cs" />
+                                                            <TextField fx:id="cs" text="0.0" GridPane.columnIndex="1" />
+                                                            <Label text="Alpha" GridPane.rowIndex="1" />
+                                                            <TextField fx:id="alpha" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                         </children>
+                                                      </GridPane>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                    </TitledPane>
+                                </panes>
+                              </Accordion>
+                           </children></AnchorPane>
+                  </content>
+                </Tab>
+                  <Tab text="Post-Processing">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0">
+                           <children>
+                              <Accordion AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                <panes>
+                                  <TitledPane animated="false" text="TecPlot Output">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <GridPane>
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Label text="Start Timestep" />
+                                                      <TextField fx:id="tecplotstart" text="1000" GridPane.columnIndex="1" />
+                                                      <Label text="Interval Timestep" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="tecplotinterval" text="1000" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                      <Label text="Stop Timestep" GridPane.rowIndex="2" />
+                                                      <TextField fx:id="tecplotstop" text="100000" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                   </children>
+                                                </GridPane>
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </TitledPane>
+                                  <TitledPane animated="false" text="Lift Drag">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <GridPane>
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Label text="LiftDrag" />
+                                                      <TextField fx:id="tecplotliftdrag" text="5" GridPane.columnIndex="1" />
+                                                      <Label text="LiftDragSection" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="tecplotliftdragsection" text="5" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                   </children>
+                                                </GridPane>
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </TitledPane>
+                                  <TitledPane animated="false" text="Snapshot">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <VBox>
+                                                   <children>
+                                                      <GridPane>
+                                                        <columnConstraints>
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                         <children>
+                                                            <Label text="Snapshot Choice for POD" />
+                                                            <ChoiceBox fx:id="snapshotChoice" prefWidth="150.0" GridPane.columnIndex="1" />
+                                                         </children>
+                                                      </GridPane>
+                                                      <GridPane>
+                                                        <columnConstraints>
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                         <children>
+                                                            <Label text="Total Snapshots" />
+                                                            <TextField fx:id="totalSnapshots" text="40" GridPane.columnIndex="1" />
+                                                            <Label text="Start Snapshots" GridPane.rowIndex="1" />
+                                                            <TextField fx:id="startSnapshots" text="28500" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                            <Label text="Dump Snapshot Interval" GridPane.rowIndex="2" />
+                                                            <TextField fx:id="dumpSnapshotInterval" text="160" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                         </children>
+                                                      </GridPane>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </TitledPane>
+                                </panes>
+                              </Accordion>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+                  <Tab text="Simulation">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0">
+                           <children>
+                              <GridPane>
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label text="Total Time Steps" />
+                                    <TextField fx:id="totalTimeSteps" text="100000" GridPane.columnIndex="1" />
+                                    <Label text="Re" GridPane.rowIndex="1" />
+                                    <TextField fx:id="re" text="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Label text="dt" GridPane.rowIndex="2" />
+                                    <TextField fx:id="dt" text="0.001" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Button id="run" fx:id="runB" mnemonicParsing="false" onAction="#runAll" text="Run" GridPane.rowIndex="3" />
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+              </tabs>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </TabPane>
                 <TextArea fx:id="outputTA" prefHeight="200.0" prefWidth="200.0">
                     <font>
                         <Font name="Lucida Console" size="12.0" />
