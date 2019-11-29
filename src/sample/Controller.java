@@ -1,24 +1,29 @@
 package sample;
 
-import com.intellij.diagnostic.hprof.action.SystemTempFilenameSupplier;
 import com.jcraft.jsch.*;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.stage.Window;
-import org.apache.http.io.SessionInputBuffer;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 
+import java.awt.*;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
-//import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class Controller {
-//    @FXML
-//    private Button run;
 
     @FXML
     TextField Nxp, Nyp, Nzp, writeRestartFile, recordFile, domainSize, radiusLengthD, Py, Pz, totalTimeSteps, re, dt, maxIterationVelocity, maxIterationPressure, maxResidualVelocity, maxResidualPressure;
@@ -35,32 +40,158 @@ public class Controller {
     @FXML
     ProgressBar progress;
     @FXML
-    ChoiceBox startOption, turbulenceModel, motionChoice, snapshotChoice, suctionChoice;
+    ChoiceBox startOption, turbulenceModel, motionChoice, snapshotChoice, suctionChoice, caseChoice;
     @FXML
     ScrollPane mainScrollPane;
     @FXML
     Button runB;
+    @FXML
+    ImageView simImage;
+    @FXML
+    Label labelStartMotion, labelWriteRestartFile;
+    @FXML
+    Accordion motionAccordion;
+    @FXML
+    GridPane gridSuction, gridSnapshot, gridTurbulence;
+    @FXML
+    SplitPane splitPane;
+    @FXML
+    Pane pane;
+    @FXML
+    TitledPane motionAmplitude,motionFrequency,motionInduced;
 
     Properties configFile;
     Task task;
+    int gridType = 0;
 
 
     @FXML
     public void initialize() {
+
+        startOption.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if (newValue.intValue() == 0) {
+                    labelWriteRestartFile.setDisable(true);
+                    writeRestartFile.setDisable(true);
+                }
+
+                if (newValue.intValue() == 1) {
+                    labelWriteRestartFile.setDisable(false);
+                    writeRestartFile.setDisable(false);
+                }
+            }
+        });
+
         startOption.setItems(FXCollections.observableArrayList("New Case", "Restart"));
         startOption.getSelectionModel().selectFirst();
+
+        turbulenceModel.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if (newValue.intValue() == 0) {
+                    gridTurbulence.setDisable(true);
+                }
+
+                if (newValue.intValue() == 1) {
+                    gridTurbulence.setDisable(false);
+                }
+            }
+        });
 
         turbulenceModel.setItems(FXCollections.observableArrayList("No Model", "Spalart Almaras"));
         turbulenceModel.getSelectionModel().selectFirst();
 
-        motionChoice.setItems(FXCollections.observableArrayList("No", "Yes"));
+
+        motionChoice.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if (newValue.intValue() == 0) {
+                    labelStartMotion.setDisable(true);
+                    motionAccordion.setDisable(true);
+                    startMotion.setDisable(true);
+                }
+                if (newValue.intValue() == 1) {
+                    labelStartMotion.setDisable(false);
+                    motionAccordion.setDisable(false);
+                    startMotion.setDisable(false);
+                    motionInduced.setDisable(true);
+                    motionFrequency.setDisable(false);
+                    motionAmplitude.setDisable(false);
+                }
+                if (newValue.intValue()== 2 ) {
+                    labelStartMotion.setDisable(false);
+                    motionAccordion.setDisable(false);
+                    startMotion.setDisable(false);
+                    motionInduced.setDisable(false);
+                    motionFrequency.setDisable(true);
+                    motionAmplitude.setDisable(true);
+
+                }
+            }
+        });
+
+        motionChoice.setItems(FXCollections.observableArrayList("None", "Forced Motion","Induced Motion"));
         motionChoice.getSelectionModel().selectFirst();
+
+
+        snapshotChoice.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if (newValue.intValue() == 0) {
+                    gridSnapshot.setDisable(true);
+                }
+
+                if (newValue.intValue() == 1) {
+                    gridSnapshot.setDisable(false);
+                }
+            }
+        });
 
         snapshotChoice.setItems(FXCollections.observableArrayList("No", "Yes"));
         snapshotChoice.getSelectionModel().selectFirst();
 
+        suctionChoice.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if (newValue.intValue() == 0) {
+                    gridSuction.setDisable(true);
+                }
+
+                if (newValue.intValue() == 1) {
+                    gridSuction.setDisable(false);
+                }
+            }
+        });
+
         suctionChoice.setItems(FXCollections.observableArrayList("No", "Yes"));
         suctionChoice.getSelectionModel().selectFirst();
+
+        caseChoice.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+
+                gridType = newValue.intValue();
+
+                if (gridType == 0) {
+                    simImage.setImage(new Image(getClass().getResourceAsStream("circle.png")));
+                } else if (gridType == 1) {
+                    simImage.setImage(new Image(getClass().getResourceAsStream("airfoil.png")));
+                } else if (gridType == 2) {
+                    simImage.setImage(new Image(getClass().getResourceAsStream("ellipsoid.png")));
+                }
+            }
+        });
+
+
+        caseChoice.setItems((FXCollections.observableArrayList("Circle", "Air foil", "Ellipsoid")));
+        caseChoice.getSelectionModel().selectFirst();
+
+        simImage.fitWidthProperty().bind(pane.widthProperty());
+        simImage.fitHeightProperty().bind(pane.heightProperty());
+
+
+
 
         progress.setMaxWidth(Double.MAX_VALUE);
     }
@@ -79,7 +210,7 @@ public class Controller {
 
         } else {
             WritetoIOFile();
-            mainScrollPane.setVvalue(1.0);
+//            mainScrollPane.setVvalue(1.0);
             testF();
         }
 //        cfdSC();
@@ -113,6 +244,7 @@ public class Controller {
 
     }
 
+    String line = "";
 
     private void testF() {
 
@@ -138,6 +270,7 @@ public class Controller {
                     int port = Integer.parseInt(configFile.getProperty("port", "22"));
                     String inputFileDestination = configFile.getProperty("inputFileDestination", "/home/dpl/cfd/inputoutputfiles/input.dat");
                     String tecPlotFile = configFile.getProperty("tecPlotFile", "/home/dpl/cfd/inputoutputfiles/TecPlot");
+                    String grid3ddFile = configFile.getProperty("grid3ddFile", "/home/dpl/cfd/inputoutputfiles/grid3dd.dat");
 
                     outputTA.setText("Transferring files to Super Computer's Compute Node...\n");
 
@@ -164,6 +297,23 @@ public class Controller {
 //                            "/state/partition1/home4/eme/junaid.ali/cfd/inputoutputfiles/input.dat"
                             inputFileDestination
                     );
+                    File g = null;
+
+                    if (gridType == 0) {
+                        g = new File("grid3ddCIRCLE.dat");
+                    } else if (gridType == 1) {
+                        g = new File("grid3ddAIRFOIL.dat");
+                    } else if (gridType == 2) {
+                        g = new File("grid3ddELLIPSOID.dat");
+                    }
+
+//                    System.out.println(gridType);
+//                    System.out.println(g.getName());
+
+//                    g=new File("grid3ddAIRFOIL.dat");
+
+                    channelSftp.put(new FileInputStream(g), grid3ddFile);
+
                     outputTA.setText("Transfer Complete\n\nStarting Simulation\n\n");
 //                    channel2.disconnect();
 
@@ -202,7 +352,7 @@ public class Controller {
 
                     long iterations = 0;
                     long totalIterations = Long.parseLong(totalTimeSteps.getText());
-                    String line = "";
+//                    String line = "";
 
                     while (true) {
 
@@ -213,7 +363,13 @@ public class Controller {
                             line = new String(bt, 0, i);
                             //displays the output of the command executed.
                             System.out.println(line);
-                            outputTA.appendText(line);
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    outputTA.appendText(line);
+                                }
+                            });
+
 
 //                                showAlert(Alert.AlertType.CONFIRMATION,"","O","P");
 
@@ -221,11 +377,17 @@ public class Controller {
                                 for (int j = 0; j < countMatches(line, "Time Step"); j++) {
                                     iterations++;
                                 }
-//                                updateProgress(startzero, 250);
+
                                 updateProgress(iterations, totalIterations);
 
-                                if ((iterations < (totalIterations - 20)) && ((iterations % 7) == 0)) {
-                                    outputTA.setText(line);
+                                if ((iterations < (totalIterations - 50)) && ((iterations % 17) == 0)) {
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            outputTA.setText(line);
+                                        }
+                                    });
+
                                 }
 
 
@@ -235,8 +397,14 @@ public class Controller {
 
 
                         if (line.contains("Simulation Complete")) {
-                            channelSftp.get(tecPlotFile, "TecPlot.dat");
+                            String directoryName = "TecPlot";
+                            File directory = new File(directoryName);
+                            if (!directory.exists()) {
+                                directory.mkdir();
+                            }
+                            channelSftp.get(tecPlotFile, directoryName+"/TecPlot.dat");
                             channel2.disconnect();
+                            Desktop.getDesktop().open(new File(directoryName));
                             break;
                         }
 
@@ -304,8 +472,10 @@ public class Controller {
             }
         };
         progress.progressProperty().bind(task.progressProperty());
-        new Thread(task).start();
 
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
 
     }
 
@@ -314,171 +484,171 @@ public class Controller {
     String commands = "cd cfd;./job";
 //    commands=new String(new byte[4],0,1);
 
-    private void cfdSC() {
-        Task task = new Task<Void>() {
-            @Override
-            public Void call() {
-
-                try {
-                    JSch jsch = new JSch();
-
-//                    Session session = jsch.getSession("junaid.ali", "10.9.41.100", 22);
-//                    session.setPassword("ceme@123");
-
-//                    int forwardedPort = 2222;
-//                    session.setPortForwardingL(forwardedPort,"compute-0-18",22);
-
-//                    Session computeSession=jsch.getSession("junaid.ali","localhost",forwardedPort);
-//                    java.util.Properties config1 = new java.util.Properties();
-//                    config1.put("StrictHostKeyChecking", "no");
-//                    computeSession.setConfig(config1);
-//                    computeSession.connect();
-
-                    Session session = jsch.getSession("dpl", "localhost", 22);
-                    session.setPassword("dpl");
-
-                    java.util.Properties config = new java.util.Properties();
-                    config.put("StrictHostKeyChecking", "no");
-                    session.setConfig(config);
-                    session.connect();
-
-
-                    Channel channel = session.openChannel("exec");
-
-                    ((ChannelExec) channel).setCommand(commands);
-
-                    channel.setInputStream(null);
-                    ((ChannelExec) channel).setErrStream(System.err);
-                    InputStream in = channel.getInputStream();
-
-
-                    channel.connect();
-
-
+//    private void cfdSC() {
+//        Task task = new Task<Void>() {
+//            @Override
+//            public Void call() {
 //
-//                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-//                    String output;
+//                try {
+//                    JSch jsch = new JSch();
 //
-//                    while ((output = reader.readLine()) != null) {
-//                        System.out.println(output);
-//                        if (output.contains("Time Step")) {
-//                            startzero++;
-//                            updateProgress(startzero, 250);
-//                        }
-////                            outputTA.setText(output);
-//                    }
-//                    reader.close();
-
-
+////                    Session session = jsch.getSession("junaid.ali", "10.9.41.100", 22);
+////                    session.setPassword("ceme@123");
+//
+////                    int forwardedPort = 2222;
+////                    session.setPortForwardingL(forwardedPort,"compute-0-18",22);
+//
+////                    Session computeSession=jsch.getSession("junaid.ali","localhost",forwardedPort);
+////                    java.util.Properties config1 = new java.util.Properties();
+////                    config1.put("StrictHostKeyChecking", "no");
+////                    computeSession.setConfig(config1);
+////                    computeSession.connect();
+//
+//                    Session session = jsch.getSession("dpl", "localhost", 22);
+//                    session.setPassword("dpl");
+//
+//                    java.util.Properties config = new java.util.Properties();
+//                    config.put("StrictHostKeyChecking", "no");
+//                    session.setConfig(config);
+//                    session.connect();
+//
+//
+//                    Channel channel = session.openChannel("exec");
+//
+//                    ((ChannelExec) channel).setCommand(commands);
+//
+//                    channel.setInputStream(null);
+//                    ((ChannelExec) channel).setErrStream(System.err);
+//                    InputStream in = channel.getInputStream();
+//
+//
+//                    channel.connect();
+//
+//
+////
+////                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+////                    String output;
+////
+////                    while ((output = reader.readLine()) != null) {
+////                        System.out.println(output);
+////                        if (output.contains("Time Step")) {
+////                            startzero++;
+////                            updateProgress(startzero, 250);
+////                        }
+//////                            outputTA.setText(output);
+////                    }
+////                    reader.close();
+//
+//
+////                    String line = "";
+////                    byte[] buffer = new byte[1024];
+////                    while (true) {
+////                        while (in.available() > 0) {
+////                            int i = in.read(buffer, 0, 1024);
+////                            if (i < 0) {
+////                                break;
+////                            }
+////                            line = new String(buffer, 0, i);
+////                            System.out.println(line);
+////                            if (line.contains("Time Step")) {
+////                                startzero++;
+////                                updateProgress(startzero, 250);
+////                            }
+////                        }
+////                    }
+//
+//
+//                    byte[] tmp = new byte[1024];
 //                    String line = "";
-//                    byte[] buffer = new byte[1024];
+//                    String outputTAS = "";
+//                    long iterations = 0;
+//                    long totalIterations = Long.parseLong(totalTimeSteps.getText());
+//
+//
 //                    while (true) {
 //                        while (in.available() > 0) {
-//                            int i = in.read(buffer, 0, 1024);
-//                            if (i < 0) {
+//                            int i = in.read(tmp, 0, 1024);
+//                            if (i < 0)
 //                                break;
-//                            }
-//                            line = new String(buffer, 0, i);
+////                                System.out.print(new String(tmp, 0, i));
+////                                outputTA.setText(new String(tmp, 0, i));
+//                            line = new String(tmp, 0, i);
 //                            System.out.println(line);
+//                            outputTA.appendText(line);
+//
+////                                showAlert(Alert.AlertType.CONFIRMATION,"","O","P");
+//
 //                            if (line.contains("Time Step")) {
-//                                startzero++;
-//                                updateProgress(startzero, 250);
+//                                for (int j = 0; j < countMatches(line, "Time Step"); j++) {
+//                                    iterations++;
+//                                }
+////                                updateProgress(startzero, 250);
+//                                updateProgress(iterations, totalIterations);
+//
+//                                if ((iterations < (totalIterations - 10)) && ((iterations % 5) == 0)) {
+//                                    outputTA.setText(line);
+//                                }
+//
+//
 //                            }
+//
+////                            if (line.contains("*******************************************************************")) {
+////outputTAS.concat(line.);
+//
+//
+////                                outputTA.setText(outputTAS);
+////                            }
+//
 //                        }
+//                        if (channel.isClosed()) {
+//                            System.out.println("exit:" + channel.getExitStatus());
+//                            break;
+//                        }
+//                        try {
+//                            Thread.sleep(1000);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//
 //                    }
-
-
-                    byte[] tmp = new byte[1024];
-                    String line = "";
-                    String outputTAS = "";
-                    long iterations = 0;
-                    long totalIterations = Long.parseLong(totalTimeSteps.getText());
-
-
-                    while (true) {
-                        while (in.available() > 0) {
-                            int i = in.read(tmp, 0, 1024);
-                            if (i < 0)
-                                break;
-//                                System.out.print(new String(tmp, 0, i));
-//                                outputTA.setText(new String(tmp, 0, i));
-                            line = new String(tmp, 0, i);
-                            System.out.println(line);
-                            outputTA.appendText(line);
-
-//                                showAlert(Alert.AlertType.CONFIRMATION,"","O","P");
-
-                            if (line.contains("Time Step")) {
-                                for (int j = 0; j < countMatches(line, "Time Step"); j++) {
-                                    iterations++;
-                                }
-//                                updateProgress(startzero, 250);
-                                updateProgress(iterations, totalIterations);
-
-                                if ((iterations < (totalIterations - 10)) && ((iterations % 5) == 0)) {
-                                    outputTA.setText(line);
-                                }
-
-
-                            }
-
-//                            if (line.contains("*******************************************************************")) {
-//outputTAS.concat(line.);
-
-
-//                                outputTA.setText(outputTAS);
-//                            }
-
-                        }
-                        if (channel.isClosed()) {
-                            System.out.println("exit:" + channel.getExitStatus());
-                            break;
-                        }
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
-
-                    }
-
-
-                    channel.disconnect();
-
-
-                    session.disconnect();
-
-//            ChannelSftp channelSftp = (ChannelSftp) channel;
-//                    channelSftp.cd;
-//            File f = new File("outp.txt");
-
-//            channelSftp.put(new FileInputStream(f), f.getName());
-
-//                    f.delete();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-               /* final int max=10000;
-                for (int i=1;i<=max;i++) {
-                    updateProgress(i,max);
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }*/
-                return null;
-            }
-        };
-
-        progress.progressProperty().bind(task.progressProperty());
-        new Thread(task).start();
-
-        /*
-         */
-    }
+//
+//
+//                    channel.disconnect();
+//
+//
+//                    session.disconnect();
+//
+////            ChannelSftp channelSftp = (ChannelSftp) channel;
+////                    channelSftp.cd;
+////            File f = new File("outp.txt");
+//
+////            channelSftp.put(new FileInputStream(f), f.getName());
+//
+////                    f.delete();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//
+//               /* final int max=10000;
+//                for (int i=1;i<=max;i++) {
+//                    updateProgress(i,max);
+//                    try {
+//                        Thread.sleep(10);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }*/
+//                return null;
+//            }
+//        };
+//
+//        progress.progressProperty().bind(task.progressProperty());
+//        new Thread(task).start();
+//
+//        /*
+//         */
+//    }
 
 
     private void showInfo(String title, String message) {
@@ -544,7 +714,7 @@ public class Controller {
             io.write(lp11.getText() + "," + lp12.getText() + "," + lp13.getText() + "," + lp14.getText() + "\n");
             io.write(lp21.getText() + "," + lp22.getText() + "," + lp23.getText() + "," + lp24.getText() + "\n");
             io.write(lp31.getText() + "," + lp32.getText() + "," + lp33.getText() + "," + lp34.getText() + "\n");
-            io.write("MOTION Choice(NO=0 YES=1), Start Motion \n");
+            io.write("MOTION Choice(NO=0 YES=1 INDUCED=2), Start Motion \n");
             io.write(motionChoice.getSelectionModel().getSelectedIndex() + "," + startMotion.getText() + "\n");
             io.write("Amplitude(X,Y,Z)&Freq(X,Y,Z)\n");
             io.write(ampX.getText() + "," + ampY.getText() + "," + ampZ.getText() + "," + freqX.getText() + "," + freqY.getText() + "," + freqZ.getText() + "\n");

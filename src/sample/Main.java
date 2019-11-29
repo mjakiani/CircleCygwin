@@ -71,10 +71,10 @@ public class Main extends Application {
 
 //        primaryStage.getIcons().add(new Image("/cfdicon.png"));
 
-        Image applicationIcon = new Image(getClass().getResourceAsStream("/appicon.png"));
+        Image applicationIcon = new Image(getClass().getResourceAsStream("appicon.png"));
         primaryStage.getIcons().add(applicationIcon);
 
-        primaryStage.setTitle("Circle 2D CFD");
+        primaryStage.setTitle("CFD");
 
         primaryStage.setScene(new Scene(root, 1024, 768));
 //        primaryStage.setMaximized(true);
