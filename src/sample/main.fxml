@@ -35,7 +35,7 @@
                                 <panes>
                                   <TitledPane animated="false" text="Domain Size">
                                     <content>
-                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="200.0">
                                              <children>
                                                 <GridPane>
                                                   <columnConstraints>
@@ -144,7 +144,7 @@
                                                       </GridPane>
                                                       <Accordion fx:id="motionAccordion">
                                                         <panes>
-                                                          <TitledPane animated="false" text="Amplitude" fx:id="motionAmplitude">
+                                                          <TitledPane fx:id="motionAmplitude" animated="false" text="Amplitude">
                                                             <content>
                                                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                                      <children>
@@ -171,7 +171,7 @@
                                                                   </AnchorPane>
                                                             </content>
                                                           </TitledPane>
-                                                          <TitledPane animated="false" text="Frequency" fx:id="motionFrequency">
+                                                          <TitledPane fx:id="motionFrequency" animated="false" text="Frequency">
                                                             <content>
                                                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                                      <children>
@@ -198,7 +198,7 @@
                                                                   </AnchorPane>
                                                             </content>
                                                           </TitledPane>
-                                                          <TitledPane animated="false" text="Induced Motion" fx:id="motionInduced">
+                                                          <TitledPane fx:id="motionInduced" animated="false" text="Induced Motion">
                                                             <content>
                                                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                                      <children>
@@ -720,7 +720,7 @@
             </Pane>
          </items>
       </SplitPane>
-          <TextArea fx:id="outputTA" editable="false" focusTraversable="false" mouseTransparent="true" prefHeight="200.0" prefWidth="200.0">
+          <TextArea fx:id="outputTA" editable="false" focusTraversable="false" mouseTransparent="false" prefHeight="200.0" prefWidth="200.0">
               <font>
                   <Font name="Lucida Console" size="12.0" />
               </font>

@@ -20,6 +20,11 @@ import javafx.scene.layout.Pane;
 
 import java.awt.*;
 import java.io.*;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Properties;
 
 
@@ -58,10 +63,10 @@ public class Controller {
     @FXML
     Pane pane;
     @FXML
-    TitledPane motionAmplitude,motionFrequency,motionInduced;
+    TitledPane motionAmplitude, motionFrequency, motionInduced;
 
     Properties configFile;
-    Task task;
+    Task task, taskC;
     int gridType = 0;
 
 
@@ -119,7 +124,7 @@ public class Controller {
                     motionFrequency.setDisable(false);
                     motionAmplitude.setDisable(false);
                 }
-                if (newValue.intValue()== 2 ) {
+                if (newValue.intValue() == 2) {
                     labelStartMotion.setDisable(false);
                     motionAccordion.setDisable(false);
                     startMotion.setDisable(false);
@@ -131,7 +136,7 @@ public class Controller {
             }
         });
 
-        motionChoice.setItems(FXCollections.observableArrayList("None", "Forced Motion","Induced Motion"));
+        motionChoice.setItems(FXCollections.observableArrayList("None", "Forced Motion", "Induced Motion"));
         motionChoice.getSelectionModel().selectFirst();
 
 
@@ -191,8 +196,6 @@ public class Controller {
         simImage.fitHeightProperty().bind(pane.heightProperty());
 
 
-
-
         progress.setMaxWidth(Double.MAX_VALUE);
     }
 
@@ -201,18 +204,22 @@ public class Controller {
     private void runAll() {
 //        showAlert(Alert.AlertType.CONFIRMATION, "", "", String.valueOf(Long.parseLong(totalTimeSteps.getText())));
 
-
-        if ((task != null) && task.isRunning()) {
-            task.cancel();
+        progress.progressProperty().unbind();
+        if ((taskC != null) && taskC.isRunning()) {
+            taskC.cancel();
             runB.setText("Run");
-            progress.progressProperty().unbind();
+
             progress.setProgress(0);
 
         } else {
+            progress.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+
             WritetoIOFile();
 //            mainScrollPane.setVvalue(1.0);
-            testF();
+//            testF();
+            testCygwin();
         }
+
 //        cfdSC();
 //outputTA.setText("df");
 
@@ -245,6 +252,188 @@ public class Controller {
     }
 
     String line = "";
+    //    String s = null;
+    String lineC = "";
+    String cygwinHome;
+
+    private void testCygwin() {
+
+//        Runtime.getRuntime().exec("dir > p.txt");
+
+//
+
+
+        taskC = new Task() {
+            @Override
+            public Void call() {
+                try {
+
+
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            runB.setText("Stop");
+                        }
+                    });
+//                System.out.println("Ceheck");
+                    readConfigFile();
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+//                            progress.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+
+
+                        }
+                    });
+
+                    cygwinHome = configFile.getProperty("cygwinHome", "");
+                    String cygwinCommand = configFile.getProperty("cygwinCommand", "dpl");
+                    String pass = configFile.getProperty("pass", "dpl");
+
+                    outputTA.setText("Starting Simulation...\n\nPlease Wait...\n\n");
+
+                    // run the Unix "ps -ef" command
+                    // using the Runtime exec method:
+//            Process p = Runtime.getRuntime().exec("c:/cygwin64/bin/bash -l -c 'cd cfdbench && ./job'");
+
+//                TODO:input.dat,grid3d
+
+                    File g = null;
+
+                    if (gridType == 0) {
+                        g = new File("grid3ddCIRCLE.dat");
+                    } else if (gridType == 1) {
+                        g = new File("grid3ddAIRFOIL.dat");
+                    } else if (gridType == 2) {
+                        g = new File("grid3ddELLIPSOID.dat");
+                    }
+
+                    Files.copy(g.toPath(), Paths.get(cygwinHome + "cfdbench/inputoutputfiles/grid3dd.dat"), StandardCopyOption.REPLACE_EXISTING);
+                    Files.copy(Paths.get("input.dat"), Paths.get(cygwinHome + "cfdbench/inputoutputfiles/input.dat"), StandardCopyOption.REPLACE_EXISTING);
+
+                    Process p = Runtime.getRuntime().exec(cygwinCommand);
+
+                    BufferedReader stdInput = new BufferedReader(new
+                            InputStreamReader(p.getInputStream()));
+
+                    BufferedReader stdError = new BufferedReader(new
+                            InputStreamReader(p.getErrorStream()));
+
+                    // read the output from the command
+//                    System.out.println("Here is the standard output of the command:\n");
+
+                    long iterations = 0;
+                    long totalIterations = Long.parseLong(totalTimeSteps.getText());
+
+                    int turn = 0;
+
+                    while ((line = stdInput.readLine()) != null) {
+
+//                        lineC="\n"+lineC+line;
+
+//                        if (turn>2) {
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (line != null) {
+
+                                    outputTA.appendText(line + "\n");
+                                }
+                            }
+                        });
+//                                                        turn=0;
+//                                                        lineC="";
+//                        }
+//turn++;
+
+                        if (line.contains("Time Step")) {
+                            for (int j = 0; j < countMatches(line, "Time Step"); j++) {
+                                iterations++;
+                            }
+
+                            updateProgress(iterations, totalIterations);
+
+                            if ((iterations < (totalIterations - 50)) && ((iterations % 17) == 0)) {
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (line != null) {
+                                            outputTA.setText(line);
+                                        }
+                                    }
+                                });
+
+                            }
+
+
+                        }
+
+                        System.out.println(line);
+//                        System.out.println(lineC);
+//                        Thread.sleep(500);
+                    }
+
+                    // read any errors from the attempted command
+//                System.out.println("Here is the standard error of the command (if any):\n");
+                    while ((line = stdError.readLine()) != null) {
+//                Platform.runLater(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        outputTA.appendText(line+"\n");
+//                    }
+//                });
+
+
+                        System.out.println(line);
+                    }
+                    Desktop.getDesktop().open(new File(cygwinHome + "cfdbench/inputoutputfiles/"));
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            runB.setText("Run");
+                        }
+                    });
+                }
+
+
+//            System.exit(0);
+                catch (Exception e) {
+
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+
+
+                            if (taskC.isCancelled()) {
+                                outputTA.appendText("\n\nSimulation was stopped!");
+                            } else {
+                                outputTA.appendText("\n\n\n\n\nAn error occurred!!!\n\nTry again\n\n");
+
+                            }
+//                        System.out.println("exception happened - here's what I know: ");
+                            runB.setText("Run");
+//                        System.exit(-1);
+                        }
+
+                    });
+                    e.printStackTrace();
+                    updateProgress(0, 0);
+                }
+
+
+                return null;
+            }
+
+        };
+
+
+        progress.progressProperty().bind(taskC.progressProperty());
+
+        Thread threadC = new Thread(taskC);
+        threadC.setDaemon(true);
+        threadC.start();
+
+    }
 
     private void testF() {
 
@@ -402,7 +591,7 @@ public class Controller {
                             if (!directory.exists()) {
                                 directory.mkdir();
                             }
-                            channelSftp.get(tecPlotFile, directoryName+"/TecPlot.dat");
+                            channelSftp.get(tecPlotFile, directoryName + "/TecPlot.dat");
                             channel2.disconnect();
                             Desktop.getDesktop().open(new File(directoryName));
                             break;
