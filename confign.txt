@@ -1,0 +1,7 @@
+user=junaid.ali
+pass=ceme@123
+host=10.9.41.100
+port=22
+inputFileDestination=/state/partition1/home4/eme/junaid.ali/cfd/inputoutputfiles/input.dat
+tecPlotFile=/state/partition1/home4/eme/junaid.ali/cfd/inputoutputfiles/TecPlot
+grid3ddFile=/state/partition1/home4/eme/junaid.ali/cfd/inputoutputfiles/grid3dd.dat
