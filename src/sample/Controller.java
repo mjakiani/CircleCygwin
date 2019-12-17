@@ -182,13 +182,25 @@ public class Controller {
 
                 if (gridType == 0) {
                     simImage.setImage(new Image(getClass().getResourceAsStream("circle.png")));
+                    Nxp.setText("193");
+                    Nyp.setText("257");
+                    Nzp.setText("2");
                 } else if (gridType == 1) {
                     simImage.setImage(new Image(getClass().getResourceAsStream("airfoil.png")));
+                    Nxp.setText("351");
+                    Nyp.setText("257");
+                    Nzp.setText("2");
                 } else if (gridType == 2) {
                     simImage.setImage(new Image(getClass().getResourceAsStream("airfoil5.png")));
+                    Nxp.setText("361");
+                    Nyp.setText("257");
+                    Nzp.setText("2");
                 }
                 else if (gridType == 3) {
                     simImage.setImage(new Image(getClass().getResourceAsStream("airfoil10.png")));
+                    Nxp.setText("361");
+                    Nyp.setText("257");
+                    Nzp.setText("2");
                 }
             }
         });

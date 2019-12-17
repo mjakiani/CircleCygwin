@@ -1,5 +1,5 @@
 Nxp Nyp Nzp (r theta z)
-351,257,2
+193,257,2
 Start Option (0:New Case,1:Restart), Write Restart file, Record file
 0,100,990000
 Domain size (Radius Length)D
@@ -9,7 +9,7 @@ Domain Decomposition (Py Pz)
 Total Time Steps
 100000
 Re dt
-100.0,0.0001
+100.0,0.002
 Max Iteration (vel pressure)
 30,800
 Max Residual (vel pressure)
