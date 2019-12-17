@@ -68,6 +68,8 @@ public class Controller {
     Properties configFile;
     Task task, taskC;
     int gridType = 0;
+    Process p;
+    Thread threadC;
 
 
     @FXML
@@ -183,13 +185,16 @@ public class Controller {
                 } else if (gridType == 1) {
                     simImage.setImage(new Image(getClass().getResourceAsStream("airfoil.png")));
                 } else if (gridType == 2) {
-                    simImage.setImage(new Image(getClass().getResourceAsStream("ellipsoid.png")));
+                    simImage.setImage(new Image(getClass().getResourceAsStream("airfoil5.png")));
+                }
+                else if (gridType == 3) {
+                    simImage.setImage(new Image(getClass().getResourceAsStream("airfoil10.png")));
                 }
             }
         });
 
 
-        caseChoice.setItems((FXCollections.observableArrayList("Circle", "Air foil", "Ellipsoid")));
+        caseChoice.setItems((FXCollections.observableArrayList("Circle", "Air foil", "Air foil at 5\u00B0","Air foil at 10\u00B0")));
         caseChoice.getSelectionModel().selectFirst();
 
         simImage.fitWidthProperty().bind(pane.widthProperty());
@@ -206,6 +211,14 @@ public class Controller {
 
         progress.progressProperty().unbind();
         if ((taskC != null) && taskC.isRunning()) {
+//            p.destroy();
+//            p.destroyForcibly();
+//            threadC.interrupt();
+            try {
+                Runtime.getRuntime().exec("taskkill /F /IM orterun.exe");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             taskC.cancel();
             runB.setText("Run");
 
@@ -296,7 +309,7 @@ public class Controller {
                     // using the Runtime exec method:
 //            Process p = Runtime.getRuntime().exec("c:/cygwin64/bin/bash -l -c 'cd cfdbench && ./job'");
 
-//                TODO:input.dat,grid3d
+//
 
                     File g = null;
 
@@ -305,13 +318,16 @@ public class Controller {
                     } else if (gridType == 1) {
                         g = new File("grid3ddAIRFOIL.dat");
                     } else if (gridType == 2) {
-                        g = new File("grid3ddELLIPSOID.dat");
+                        g = new File("grid3dd_a5.dat");
+                    } else if (gridType == 3) {
+                        g = new File("grid3dd_a10.dat");
                     }
 
                     Files.copy(g.toPath(), Paths.get(cygwinHome + "cfdbench/inputoutputfiles/grid3dd.dat"), StandardCopyOption.REPLACE_EXISTING);
                     Files.copy(Paths.get("input.dat"), Paths.get(cygwinHome + "cfdbench/inputoutputfiles/input.dat"), StandardCopyOption.REPLACE_EXISTING);
 
-                    Process p = Runtime.getRuntime().exec(cygwinCommand);
+
+                    p = Runtime.getRuntime().exec(cygwinCommand);
 
                     BufferedReader stdInput = new BufferedReader(new
                             InputStreamReader(p.getInputStream()));
@@ -338,6 +354,11 @@ public class Controller {
                                 if (line != null) {
 
                                     outputTA.appendText(line + "\n");
+//                                    String ts = "";
+//                                    if (line.contains("Time Step")) {
+//                                        ts = line.substring(11, 32);
+//                                    }
+//                                    outputTA.setText("Time Step" + ts);
                                 }
                             }
                         });
@@ -369,6 +390,7 @@ public class Controller {
                         }
 
                         System.out.println(line);
+//                        System.out.println("*/");
 //                        System.out.println(lineC);
 //                        Thread.sleep(500);
                     }
@@ -429,244 +451,245 @@ public class Controller {
 
         progress.progressProperty().bind(taskC.progressProperty());
 
-        Thread threadC = new Thread(taskC);
+        threadC = new Thread(taskC);
         threadC.setDaemon(true);
         threadC.start();
 
+
     }
 
-    private void testF() {
-
-        task = new Task<Void>() {
-            @Override
-            public Void call() {
-                try {
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            runB.setText("Stop");
-                        }
-                    });
-
-
-                    JSch jsch = new JSch();
-
-                    readConfigFile();
-
-                    String user = configFile.getProperty("user", "dpl");
-                    String pass = configFile.getProperty("pass", "dpl");
-                    String host = configFile.getProperty("host", "localhost");
-                    int port = Integer.parseInt(configFile.getProperty("port", "22"));
-                    String inputFileDestination = configFile.getProperty("inputFileDestination", "/home/dpl/cfd/inputoutputfiles/input.dat");
-                    String tecPlotFile = configFile.getProperty("tecPlotFile", "/home/dpl/cfd/inputoutputfiles/TecPlot");
-                    String grid3ddFile = configFile.getProperty("grid3ddFile", "/home/dpl/cfd/inputoutputfiles/grid3dd.dat");
-
-                    outputTA.setText("Transferring files to Super Computer's Compute Node...\n");
-
-                    Session session = jsch.getSession(user, host, port);
-                    session.setPassword(pass);
-
-//                    Session session = jsch.getSession("dpl", "localhost", 22);
-//                    session.setPassword("dpl");
+//    private void testF() {
 //
-//                    Session session = jsch.getSession("junaid.ali", "10.9.41.100", 22);
-//                    session.setPassword("ceme@123");
-
-                    java.util.Properties config = new java.util.Properties();
-                    config.put("StrictHostKeyChecking", "no");
-                    session.setConfig(config);
-                    session.connect();
-
-                    Channel channel2 = session.openChannel("sftp");
-                    channel2.connect();
-                    ChannelSftp channelSftp = (ChannelSftp) channel2;
-                    File f = new File("input.dat");
-                    channelSftp.put(new FileInputStream(f),
-//                            "/home/dpl/cfd/inputoutputfiles/input.dat"
-//                            "/state/partition1/home4/eme/junaid.ali/cfd/inputoutputfiles/input.dat"
-                            inputFileDestination
-                    );
-                    File g = null;
-
-                    if (gridType == 0) {
-                        g = new File("grid3ddCIRCLE.dat");
-                    } else if (gridType == 1) {
-                        g = new File("grid3ddAIRFOIL.dat");
-                    } else if (gridType == 2) {
-                        g = new File("grid3ddELLIPSOID.dat");
-                    }
-
-//                    System.out.println(gridType);
-//                    System.out.println(g.getName());
-
-//                    g=new File("grid3ddAIRFOIL.dat");
-
-                    channelSftp.put(new FileInputStream(g), grid3ddFile);
-
-                    outputTA.setText("Transfer Complete\n\nStarting Simulation\n\n");
-//                    channel2.disconnect();
-
-
-                    ChannelShell channel = (ChannelShell) session.openChannel("shell");
-//        PipedInputStream pis = new PipedInputStream();
-//        PipedOutputStream pos = new PipedOutputStream();
-//        channel.setInputStream(new PipedInputStream(pos));
-//        channel.setOutputStream(new PipedOutputStream(pis));
-
-
-                    channel.connect();
-//        pos.write("ls".getBytes(StandardCharsets.UTF_8));
-//        pos.write("ssh compute-0-18".getBytes(StandardCharsets.UTF_8));
+//        task = new Task<Void>() {
+//            @Override
+//            public Void call() {
+//                try {
+//                    Platform.runLater(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            runB.setText("Stop");
+//                        }
+//                    });
 //
-//        pos.flush();
-//        System.out.println(pis.read());
-//        pis.close();
-//        pos.close();
-
-                    OutputStream ops = channel.getOutputStream();
-                    PrintStream ps = new PrintStream(ops, true);
-
-                    InputStream in = channel.getInputStream();
-                    byte[] bt = new byte[1024];
-
-//                    ps.println("ls");
-//                    ps.println("ssh compute-0-18");
-//                    ps.println("ls");
-
-
-//                    ps.println("cd circle2d");
-                    ps.println("cd cfd");
-
-                    ps.println("./job");
-
-                    long iterations = 0;
-                    long totalIterations = Long.parseLong(totalTimeSteps.getText());
-//                    String line = "";
-
-                    while (true) {
-
-                        while (in.available() > 0) {
-                            int i = in.read(bt, 0, 1024);
-                            if (i < 0)
-                                break;
-                            line = new String(bt, 0, i);
-                            //displays the output of the command executed.
-                            System.out.println(line);
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    outputTA.appendText(line);
-                                }
-                            });
-
-
-//                                showAlert(Alert.AlertType.CONFIRMATION,"","O","P");
-
-                            if (line.contains("Time Step")) {
-                                for (int j = 0; j < countMatches(line, "Time Step"); j++) {
-                                    iterations++;
-                                }
-
-                                updateProgress(iterations, totalIterations);
-
-                                if ((iterations < (totalIterations - 50)) && ((iterations % 17) == 0)) {
-                                    Platform.runLater(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            outputTA.setText(line);
-                                        }
-                                    });
-
-                                }
-
-
-                            }
-
-                        }
-
-
-                        if (line.contains("Simulation Complete")) {
-                            String directoryName = "TecPlot";
-                            File directory = new File(directoryName);
-                            if (!directory.exists()) {
-                                directory.mkdir();
-                            }
-                            channelSftp.get(tecPlotFile, directoryName + "/TecPlot.dat");
-                            channel2.disconnect();
-                            Desktop.getDesktop().open(new File(directoryName));
-                            break;
-                        }
-
-//                        if (iterations == totalIterations) {
-////                            showInfo("Iteration", "IT");
 //
-////                            Channel channelExec = session.openChannel("exec");
+//                    JSch jsch = new JSch();
+//
+//                    readConfigFile();
+//
+//                    String user = configFile.getProperty("user", "dpl");
+//                    String pass = configFile.getProperty("pass", "dpl");
+//                    String host = configFile.getProperty("host", "localhost");
+//                    int port = Integer.parseInt(configFile.getProperty("port", "22"));
+//                    String inputFileDestination = configFile.getProperty("inputFileDestination", "/home/dpl/cfd/inputoutputfiles/input.dat");
+//                    String tecPlotFile = configFile.getProperty("tecPlotFile", "/home/dpl/cfd/inputoutputfiles/TecPlot");
+//                    String grid3ddFile = configFile.getProperty("grid3ddFile", "/home/dpl/cfd/inputoutputfiles/grid3dd.dat");
+//
+//                    outputTA.setText("Transferring files to Super Computer's Compute Node...\n");
+//
+//                    Session session = jsch.getSession(user, host, port);
+//                    session.setPassword(pass);
+//
+////                    Session session = jsch.getSession("dpl", "localhost", 22);
+////                    session.setPassword("dpl");
 ////
+////                    Session session = jsch.getSession("junaid.ali", "10.9.41.100", 22);
+////                    session.setPassword("ceme@123");
+//
+//                    java.util.Properties config = new java.util.Properties();
+//                    config.put("StrictHostKeyChecking", "no");
+//                    session.setConfig(config);
+//                    session.connect();
+//
+//                    Channel channel2 = session.openChannel("sftp");
+//                    channel2.connect();
+//                    ChannelSftp channelSftp = (ChannelSftp) channel2;
+//                    File f = new File("input.dat");
+//                    channelSftp.put(new FileInputStream(f),
+////                            "/home/dpl/cfd/inputoutputfiles/input.dat"
+////                            "/state/partition1/home4/eme/junaid.ali/cfd/inputoutputfiles/input.dat"
+//                            inputFileDestination
+//                    );
+//                    File g = null;
+//
+//                    if (gridType == 0) {
+//                        g = new File("grid3ddCIRCLE.dat");
+//                    } else if (gridType == 1) {
+//                        g = new File("grid3ddAIRFOIL.dat");
+//                    } else if (gridType == 2) {
+//                        g = new File("grid3ddELLIPSOID.dat");
+//                    }
+//
+////                    System.out.println(gridType);
+////                    System.out.println(g.getName());
+//
+////                    g=new File("grid3ddAIRFOIL.dat");
+//
+//                    channelSftp.put(new FileInputStream(g), grid3ddFile);
+//
+//                    outputTA.setText("Transfer Complete\n\nStarting Simulation\n\n");
+////                    channel2.disconnect();
+//
+//
+//                    ChannelShell channel = (ChannelShell) session.openChannel("shell");
+////        PipedInputStream pis = new PipedInputStream();
+////        PipedOutputStream pos = new PipedOutputStream();
+////        channel.setInputStream(new PipedInputStream(pos));
+////        channel.setOutputStream(new PipedOutputStream(pis));
+//
+//
+//                    channel.connect();
+////        pos.write("ls".getBytes(StandardCharsets.UTF_8));
+////        pos.write("ssh compute-0-18".getBytes(StandardCharsets.UTF_8));
 ////
-////                            ChannelExec exec = (ChannelExec) channelExec;
-////                            exec.setCommand("cd cfd;cd inputoutputfiles;cat Plot3D* > TecPlot");
-////                            channelExec.connect();
+////        pos.flush();
+////        System.out.println(pis.read());
+////        pis.close();
+////        pos.close();
 //
-////                            ps.println("cd inputoutputfiles");
-////                            ps.println("cat Plot3D* > TecPlot");
-////                            channelExec.disconnect();
+//                    OutputStream ops = channel.getOutputStream();
+//                    PrintStream ps = new PrintStream(ops, true);
+//
+//                    InputStream in = channel.getInputStream();
+//                    byte[] bt = new byte[1024];
+//
+////                    ps.println("ls");
+////                    ps.println("ssh compute-0-18");
+////                    ps.println("ls");
 //
 //
+////                    ps.println("cd circle2d");
+//                    ps.println("cd cfd");
+//
+//                    ps.println("./job");
+//
+//                    long iterations = 0;
+//                    long totalIterations = Long.parseLong(totalTimeSteps.getText());
+////                    String line = "";
+//
+//                    while (true) {
+//
+//                        while (in.available() > 0) {
+//                            int i = in.read(bt, 0, 1024);
+//                            if (i < 0)
+//                                break;
+//                            line = new String(bt, 0, i);
+//                            //displays the output of the command executed.
+//                            System.out.println(line);
+//                            Platform.runLater(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    outputTA.appendText(line);
+//                                }
+//                            });
 //
 //
+////                                showAlert(Alert.AlertType.CONFIRMATION,"","O","P");
 //
-//                            System.out.println("Iterational Exit");
+//                            if (line.contains("Time Step")) {
+//                                for (int j = 0; j < countMatches(line, "Time Step"); j++) {
+//                                    iterations++;
+//                                }
+//
+//                                updateProgress(iterations, totalIterations);
+//
+//                                if ((iterations < (totalIterations - 50)) && ((iterations % 17) == 0)) {
+//                                    Platform.runLater(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            outputTA.setText(line);
+//                                        }
+//                                    });
+//
+//                                }
+//
+//
+//                            }
+//
+//                        }
+//
+//
+//                        if (line.contains("Simulation Complete")) {
+//                            String directoryName = "TecPlot";
+//                            File directory = new File(directoryName);
+//                            if (!directory.exists()) {
+//                                directory.mkdir();
+//                            }
+//                            channelSftp.get(tecPlotFile, directoryName + "/TecPlot.dat");
+//                            channel2.disconnect();
+//                            Desktop.getDesktop().open(new File(directoryName));
 //                            break;
 //                        }
-
-
-                        if (channel.isClosed()) {
-//                            showInfo("Channel", "Closed");
-                            System.out.println("Channel Exit");
-                            break;
-                        }
-                        Thread.sleep(500);
-
-                    }
-
-
-//                    outputTA.appendText("\n\n\n Simulation Complete");
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            runB.setText("Run");
-                        }
-                    });
-
-                    channel.disconnect();
-                    session.disconnect();
-                } catch (Exception e) {
-
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (task.isCancelled()) {
-                                outputTA.appendText("\n\nSimulation was stopped!");
-
-                            } else {
-                                outputTA.appendText("\n\n\n\n\nAn error occurred!!!\n\nTry again\n\n");
-                            }
-                            runB.setText("Run");
-                        }
-                    });
-                    updateProgress(0, 0);
-                    e.printStackTrace();
-                }
-                return null;
-            }
-        };
-        progress.progressProperty().bind(task.progressProperty());
-
-        Thread thread = new Thread(task);
-        thread.setDaemon(true);
-        thread.start();
-
-    }
+//
+////                        if (iterations == totalIterations) {
+//////                            showInfo("Iteration", "IT");
+////
+//////                            Channel channelExec = session.openChannel("exec");
+//////
+//////
+//////                            ChannelExec exec = (ChannelExec) channelExec;
+//////                            exec.setCommand("cd cfd;cd inputoutputfiles;cat Plot3D* > TecPlot");
+//////                            channelExec.connect();
+////
+//////                            ps.println("cd inputoutputfiles");
+//////                            ps.println("cat Plot3D* > TecPlot");
+//////                            channelExec.disconnect();
+////
+////
+////
+////
+////
+////                            System.out.println("Iterational Exit");
+////                            break;
+////                        }
+//
+//
+//                        if (channel.isClosed()) {
+////                            showInfo("Channel", "Closed");
+//                            System.out.println("Channel Exit");
+//                            break;
+//                        }
+//                        Thread.sleep(500);
+//
+//                    }
+//
+//
+////                    outputTA.appendText("\n\n\n Simulation Complete");
+//                    Platform.runLater(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            runB.setText("Run");
+//                        }
+//                    });
+//
+//                    channel.disconnect();
+//                    session.disconnect();
+//                } catch (Exception e) {
+//
+//                    Platform.runLater(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            if (task.isCancelled()) {
+//                                outputTA.appendText("\n\nSimulation was stopped!");
+//
+//                            } else {
+//                                outputTA.appendText("\n\n\n\n\nAn error occurred!!!\n\nTry again\n\n");
+//                            }
+//                            runB.setText("Run");
+//                        }
+//                    });
+//                    updateProgress(0, 0);
+//                    e.printStackTrace();
+//                }
+//                return null;
+//            }
+//        };
+//        progress.progressProperty().bind(task.progressProperty());
+//
+//        Thread thread = new Thread(task);
+//        thread.setDaemon(true);
+//        thread.start();
+//
+//    }
 
     //String[] commands = {"ls","cd mpicheck","mpirun ranker.x"};
 //    String commands = "cd circle2d;cd inputoutputfiles;mpirun -np 4 ../bin/main3D.exe";
