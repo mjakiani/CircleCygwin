@@ -691,7 +691,7 @@
                                 </rowConstraints>
                                  <children>
                                     <Label text="Total Time Steps" GridPane.rowIndex="1" />
-                                    <TextField fx:id="totalTimeSteps" text="100000" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <TextField fx:id="totalTimeSteps" text="100" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                     <Label text="Re" GridPane.rowIndex="2" />
                                     <TextField fx:id="re" text="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <Label text="dt" GridPane.rowIndex="3" />
@@ -720,7 +720,7 @@
             </Pane>
          </items>
       </SplitPane>
-          <TextArea fx:id="outputTA" editable="false" focusTraversable="false" mouseTransparent="false" prefHeight="200.0" prefWidth="200.0">
+          <TextArea fx:id="outputTA" editable="true" focusTraversable="false" mouseTransparent="false" prefHeight="200.0" prefWidth="200.0">
               <font>
                   <Font name="Lucida Console" size="12.0" />
               </font>

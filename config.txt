@@ -1,3 +1,7 @@
 #cygwinCommand=c:/cygwin64/bin/bash -l -c 'cd /home/Kiani/cfdbench && ls'
-cygwinCommand=c:/cygwin64/bin/bash -l -c 'cd /home/Kiani/cfdbench && ./job'
+#cygwinCommand=c:/cygwin64/bin/bash -l -c 'cd /home/Kiani/cfdbench && ./job'
+
+cygwinCommand=bash -c 'cd /home/dpl/cfdbench && ./job'
+
+
 cygwinHome=c:/cygwin64/home/Kiani/

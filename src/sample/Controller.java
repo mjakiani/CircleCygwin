@@ -195,8 +195,7 @@ public class Controller {
                     Nxp.setText("361");
                     Nyp.setText("257");
                     Nzp.setText("2");
-                }
-                else if (gridType == 3) {
+                } else if (gridType == 3) {
                     simImage.setImage(new Image(getClass().getResourceAsStream("airfoil10.png")));
                     Nxp.setText("361");
                     Nyp.setText("257");
@@ -206,7 +205,7 @@ public class Controller {
         });
 
 
-        caseChoice.setItems((FXCollections.observableArrayList("Circle", "Air foil", "Air foil at 5\u00B0","Air foil at 10\u00B0")));
+        caseChoice.setItems((FXCollections.observableArrayList("Circle", "Air foil", "Air foil at 5\u00B0", "Air foil at 10\u00B0")));
         caseChoice.getSelectionModel().selectFirst();
 
         simImage.fitWidthProperty().bind(pane.widthProperty());
@@ -227,7 +226,9 @@ public class Controller {
 //            p.destroyForcibly();
 //            threadC.interrupt();
             try {
-                Runtime.getRuntime().exec("taskkill /F /IM orterun.exe");
+//                Runtime.getRuntime().exec("taskkill /F /IM orterun.exe");
+                Runtime.getRuntime().exec("taskkill /F /IM main3D.exe");
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -280,6 +281,13 @@ public class Controller {
     //    String s = null;
     String lineC = "";
     String cygwinHome;
+    String split[]=null;
+    String timestep = "";
+    String simtime="";
+    String ures="",uit="",ui="",uj="",uk="";
+    String vres="",vit="",vi="",vj="",vk="";
+    String wres="",wit="",wi="",wj="",wk="";
+    String phi="",phiit="",cfl="",maxdiv="";
 
     private void testCygwin() {
 
@@ -355,7 +363,52 @@ public class Controller {
 
                     int turn = 0;
 
+
                     while ((line = stdInput.readLine()) != null) {
+
+                        if(line.contains("Time Step")) {
+                            for (int j = 0; j < countMatches(line, "Time Step"); j++) {
+                                iterations++;
+                            }
+                            updateProgress(iterations, totalIterations);
+                            
+                            split=line.split("\\s+");
+                            timestep=split[4];
+                            simtime=split[8];
+                        } else if(line.contains("u-vel")) {
+                            split=line.split("\\s+");
+                            ures=split[6];
+                            uit=split[10];
+                            ui=split[15];
+                            uj=split[16];
+                            uk=split[17];
+                        } else if(line.contains("v-vel")) {
+                            split=line.split("\\s+");
+                            vres=split[6];
+                            vit=split[10];
+                            vi=split[15];
+                            vj=split[16];
+                            vk=split[17];
+                        }else if(line.contains("w-vel")) {
+                            split=line.split("\\s+");
+                            wres=split[6];
+                            wit=split[10];
+                            wi=split[15];
+                            wj=split[16];
+                            wk=split[17];
+                        } else  if(line.contains("phi")) {
+                            split=line.split("\\s+");
+                            phi=split[6];
+                            phiit=split[10];
+                        }else  if(line.contains("CFL")) {
+                            split=line.split("\\s+");
+                            cfl=split[4];
+                        }else  if(line.contains("Maximum")) {
+                            split=line.split("\\s+");
+                            maxdiv=split[4];
+                        }
+
+
 
 //                        lineC="\n"+lineC+line;
 
@@ -363,45 +416,58 @@ public class Controller {
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                if (line != null) {
-
-                                    outputTA.appendText(line + "\n");
-//                                    String ts = "";
+//                                if (line != null) {
+//
+////                                    outputTA.appendText(line + "\n");
+//                                    String[] ts = null;
 //                                    if (line.contains("Time Step")) {
-//                                        ts = line.substring(11, 32);
+////                                        ts = line.split(" ");outputTA.setText("Time Step     " + String.join(",",ts));
+//                                        ts = line.split(" ");
+//                                        outputTA.setText(ts[13]);
+////                                        for (int i = 0; i < ts.length; i++) {
+////                                            outputTA.appendText(i +" " + ts[i]+"\n");
+////                                        }
+//
 //                                    }
-//                                    outputTA.setText("Time Step" + ts);
-                                }
+//
+//                                }
+
+                                outputTA.setText("Time Step =\t\t\t"+timestep+"\t\tSimulation Time =\t"+simtime+"\n"
+                                                +"final residual in u-vel =\t"+ures+"\tin iteration =\t"+uit+" at location i,j,k =\t"+ui+"\t"+uj+"\t"+uk+"\n"
+                                                +"final residual in v-vel =\t"+vres+"\tin iteration =\t"+vit+" at location i,j,k =\t"+vi+"\t"+vj+"\t"+vk+"\n"
+                                                +"final residual in w-vel =\t"+wres+"\tin iteration =\t"+wit+" at location i,j,k =\t"+wi+"\t"+wj+"\t"+wk+"\n"
+                                                +"final residual in phi =\t\t"+phi+"\tin iteration =\t"+phiit+"\n"
+                                        +"CFL number =\t\t\t"+cfl+"\n"
+                                +"Maximum divergence =\t\t"+maxdiv);
                             }
                         });
+//                        System.out.println("Time Step     "+timestep+"    Simulation Time     "+simtime);
+
+
 //                                                        turn=0;
 //                                                        lineC="";
 //                        }
 //turn++;
 
                         if (line.contains("Time Step")) {
-                            for (int j = 0; j < countMatches(line, "Time Step"); j++) {
-                                iterations++;
-                            }
 
-                            updateProgress(iterations, totalIterations);
 
-                            if ((iterations < (totalIterations - 50)) && ((iterations % 17) == 0)) {
-                                Platform.runLater(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (line != null) {
-                                            outputTA.setText(line);
-                                        }
-                                    }
-                                });
-
-                            }
+//                            if ((iterations < (totalIterations - 50)) && ((iterations % 17) == 0)) {
+//                                Platform.runLater(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        if (line != null) {
+//                                            outputTA.setText(line);
+//                                        }
+//                                    }
+//                                });
+//
+//                            }
 
 
                         }
 
-                        System.out.println(line);
+//                        System.out.println(line);
 //                        System.out.println("*/");
 //                        System.out.println(lineC);
 //                        Thread.sleep(500);
@@ -420,7 +486,7 @@ public class Controller {
 
                         System.out.println(line);
                     }
-                    Desktop.getDesktop().open(new File(cygwinHome + "cfdbench/inputoutputfiles/"));
+//                    Desktop.getDesktop().open(new File(cygwinHome + "cfdbench/inputoutputfiles/"));
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
